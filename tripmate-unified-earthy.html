@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="TripMate — plan trips, find local guides, live safety tracking, and more." />
+  <title>TripMate • Travel Smarter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Leaflet for maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <style>
+    :root{ --bg:#1a150f; --card:#221b14; --muted:#bda793; --text:#f3eee8; --brand:#a87c52; --brand-2:#c8b27c; --danger:#c9573b; --radius:18px; --shadow:0 20px 60px rgba(0,0,0,.35); }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; background: radial-gradient(1200px 600px at 10% -10%, #3a2c20, transparent 50%), radial-gradient(800px 500px at 110% 10%, #251d14, transparent 40%), var(--bg); color:var(--text); line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.1rem;border-radius:14px;background:linear-gradient(135deg,var(--brand),#b8926b);color:white;font-weight:600;border:0;cursor:pointer;transition: transform .08s ease, box-shadow .2s ease; box-shadow:0 10px 30px rgba(168,124,82,.35)}
+    .btn:hover{transform:translateY(-1px)}
+    .btn.secondary{background:rgba(255,255,255,.06);box-shadow:none;color:#f0e7db}
+    .tag{font-size:.75rem;color:var(--brand-2);border:1px solid rgba(200,178,124,.35);padding:.25rem .5rem;border-radius:999px}
+    header{position:sticky;top:0;z-index:50;background:rgba(26,21,15,.6);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .logo{display:flex;align-items:center;gap:.6rem;font-weight:800;letter-spacing:.3px}
+    .logo-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;color:#1a1209;font-weight:800}
+    nav ul{display:flex;gap:1rem;list-style:none;padding:0;margin:0}
+    nav a{padding:.5rem .75rem;border-radius:10px;color:#e6dbc9}
+    nav a:hover{background:rgba(255,255,255,.06);color:white}
+    .mobile-toggle{display:none}
+    .hero{padding:72px 0 40px}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+    .hero h1{font-size:clamp(2rem,3.8vw,3.4rem);line-height:1.1;margin:.25rem 0 .75rem}
+    .lead{color:#e9dfd2;max-width:56ch}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+    .input-row{display:flex;gap:.5rem;flex-wrap:wrap}
+    .input{flex:1;min-width:220px;background:#1f180f;border:1px solid rgba(255,255,255,.12);color:#f3eee8;border-radius:12px;padding:.85rem 1rem}
+    .section{padding:56px 0}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.10);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+    .card h3{margin:.2rem 0 .35rem}
+    .muted{color:var(--muted)}
+    .icon{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.08)}
+    .gallery{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+    .gallery img{width:100%;height:160px;object-fit:cover;border-radius:14px;border:1px solid rgba(255,255,255,.08)}
+    #planMap,#liveMap{width:100%;height:280px;border-radius:14px;border:1px solid rgba(255,255,255,.08)}
+    .guide{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:rgba(255,255,255,.03);cursor:pointer}
+    .guide img{width:48px;height:48px;border-radius:50%;object-fit:cover}
+    /* Featured mini cards */
+    .mini-card{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:rgba(255,255,255,.03);cursor:pointer}
+    .mini-card img{width:56px;height:56px;border-radius:50%;object-fit:cover}
+    .mini-card:hover{transform:translateY(-1px);transition:.08s ease}
+    /* Guide Plan Modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,8,6,.6);backdrop-filter:blur(6px);z-index:120}
+    .modal.open{display:flex}
+    .modal .dialog{background:var(--card);border:1px solid rgba(255,255,255,.10);border-radius:16px;box-shadow:var(--shadow);max-width:780px;width:92%;padding:16px}
+    .modal header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:8px;margin-bottom:12px}
+    .close{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--text);padding:6px 10px;border-radius:999px;cursor:pointer}
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:36px 0;color:#e0d3c3}
+    @media (max-width: 980px){ .hero-grid{grid-template-columns:1fr} .grid-3{grid-template-columns:1fr 1fr} .gallery{grid-template-columns:repeat(3,1fr)} nav ul{display:none} .mobile-toggle{display:inline-flex} .grid-2{grid-template-columns:1fr} }
+    @media (max-width: 560px){ .grid-3{grid-template-columns:1fr} .gallery{grid-template-columns:repeat(2,1fr)} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav" role="navigation" aria-label="Primary">
+      <a class="logo" href="#"><span class="logo-icon">TM</span><span>TripMate</span></a>
+      <nav>
+        <div class="lang" role="group" aria-label="Language" style="display:flex;gap:6px;margin-right:12px">
+          <button id="langEN" class="btn secondary" style="padding:.4rem .7rem">EN</button>
+          <button id="langTR" class="btn secondary" style="padding:.4rem .7rem">TR</button>
+        </div>
+        <button class="btn secondary mobile-toggle" aria-expanded="false" aria-controls="mobile-menu">Menu</button>
+        <ul id="desktop-menu">
+          <li><a id="mFeatures" href="#features">Features</a></li>
+          <li><a id="mPlan" href="#plan">Plan Trip</a></li>
+          <li><a id="mGuides" href="#guides">Local Guides</a></li>
+          <li><a id="mLive" href="#live">Safety</a></li>
+          <li><a id="mReviews" href="#reviews">Reviews</a></li>
+          <li><a id="mPricing" href="#pricing">Pricing</a></li>
+          <li><a id="mContact" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div id="mobile-menu" class="container" hidden>
+      <ul style="display:grid;gap:.5rem;list-style:none;padding:0 0 12px;margin:0">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#plan">Plan Trip</a></li>
+        <li><a href="#guides">Local Guides</a></li>
+        <li><a href="#live">Safety</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-grid">
+        <div>
+          <span class="tag">NEW • Safety tracking + guides</span>
+          <h1>Plan, book, and share unforgettable trips — all in one place.</h1>
+          <p class="lead" id="heroLead">TripMate helps you build smart itineraries, find trusted local guides, and share your live location with loved ones.</p>
+          <div class="input-row" style="margin:.9rem 0 0">
+            <input class="input" type="text" placeholder="Where to? e.g., Rome, Kyoto, Cappadocia" aria-label="Destination" id="heroDest" />
+            <input class="input" type="date" aria-label="Start date" id="heroStart" />
+            <button class="btn" id="cta">Start planning</button>
+          </div>
+          <p class="muted" style="margin-top:.5rem">Free 7‑day trial • No credit card needed</p>
+        </div>
+        <div class="hero-card" aria-label="App preview">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1400&auto=format&fit=crop" alt="Sunset over mountains with a map on phone" style="width:100%;height:280px;object-fit:cover;border-radius:14px;border:1px solid rgba(255,255,255,.08)" />
+          <div class="grid-3" style="margin-top:14px">
+            <div class="card" style="padding:14px"><div class="icon">🗺️</div><div style="font-weight:700">Daily plans</div><div class="muted">Optimized schedules with maps.</div></div>
+            <div class="card" style="padding:14px"><div class="icon">🧭</div><div style="font-weight:700">Local guides</div><div class="muted">Filter by language, price, rating.</div></div>
+            <div class="card" style="padding:14px"><div class="icon">🛰️</div><div style="font-weight:700">Live safety</div><div class="muted">Share live location + SOS.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED GUIDES -->
+    <section id="featured-guides" class="section" style="padding-top:20px">
+      <div class="container">
+        <h2 style="margin:0 0 10px">Featured Guides</h2>
+        <p class="muted" style="margin:0 0 16px">Popular, highly rated local experts you can book right away.</p>
+        <div id="featuredGuides" class="grid-3"></div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 10px">Everything you need for stress‑free travel</h2>
+        <p class="muted" style="margin:0 0 20px">From the first spark to your last selfie — TripMate keeps it simple.</p>
+        <div class="grid-3">
+          <div class="card"><h3>Discover</h3><p class="muted">Guides, trending spots, and seasonal picks tailored to your vibe.</p></div>
+          <div class="card"><h3>Itineraries</h3><p class="muted">Drag‑and‑drop plans with opening hours & travel time.</p></div>
+          <div class="card"><h3>Bookings</h3><p class="muted">Flights, stays, and activities in one checkout.</p></div>
+          <div class="card"><h3>Collaboration</h3><p class="muted">Invite friends, vote on dates, split expenses.</p></div>
+          <div class="card"><h3>Offline mode</h3><p class="muted">Access tickets and maps offline.</p></div>
+          <div class="card"><h3>Privacy first</h3><p class="muted">You control who sees what.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAN TRIP -->
+    <section id="plan" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 10px">Plan Trip</h2>
+        <div class="grid-2">
+          <div class="card">
+            <div class="grid-2" style="grid-template-columns:1fr 1fr 1fr; gap:10px">
+              <label><span class="muted">Destination</span><input class="input" id="dest" placeholder="Cappadocia / Rome"></label>
+              <label><span class="muted">Start Date</span><input class="input" type="date" id="startDate"></label>
+              <label><span class="muted">Days</span><input class="input" type="number" id="days" min="1" value="3"></label>
+              <label style="grid-column:1 / -1"><span class="muted">Interests</span>
+                <select class="input" id="interest">
+                  <option value="mix">Mixed</option>
+                  <option value="food">Food</option>
+                  <option value="museum">Museums & Culture</option>
+                  <option value="nature">Nature & Hiking</option>
+                </select>
+              </label>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <button class="btn" id="buildPlan">Build Daily Schedule</button>
+              <button class="btn secondary" id="downloadICS">Download .ics</button>
+            </div>
+            <div id="planOut" class="grid-3" style="margin-top:12px"></div>
+          </div>
+          <div class="card">
+            <h3 style="margin:0 0 8px">Map</h3>
+            <div id="planMap"></div>
+            <div class="card" style="margin-top:10px">
+              <h4 style="margin:0 0 6px">Place Suggestions</h4>
+              <div id="pois" class="grid-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCAL GUIDES -->
+    <section id="guides" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 10px">Find Local Guides</h2>
+        <div class="grid-2">
+          <div class="card">
+            <div class="grid-2" style="grid-template-columns:1fr 1fr 1fr">
+              <label><span class="muted">City</span><input class="input" id="city" placeholder="Nevşehir / Istanbul"></label>
+              <label><span class="muted">Language</span>
+                <select class="input" id="lang"><option>EN</option><option>TR</option><option>DE</option><option>AR</option></select>
+              </label>
+              <label><span class="muted">Max Price (₺)</span><input class="input" id="maxPrice" type="number" value="1500"></label>
+            </div>
+            <div id="guideList" class="grid-3" style="margin-top:12px"></div>
+          </div>
+          <div class="card">
+            <h3 style="margin:0 0 8px">Recommended Trips</h3>
+            <div id="suggestList" class="grid-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE SAFETY -->
+    <section id="live" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 10px">Live Tracking & Safety</h2>
+        <div class="grid-2">
+          <div class="card">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <label class="tag" style="display:inline-flex;align-items:center;gap:6px"><input type="checkbox" id="shareChk"> Share my location with trusted contacts</label>
+              <a class="btn secondary" href="tel:112" title="Emergency"><strong>112</strong> Call</a>
+              <a class="btn secondary" href="sms:+900000000000?body=EMERGENCY:%20I%20shared%20my%20location.">Emergency SMS</a>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="margin:0 0 8px">Follow‑me Map</h3>
+            <div id="liveMap"></div>
+            <small class="muted">Demo: your location updates in real time if permission is granted.</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 10px">Reviews & Ratings</h2>
+        <div id="reviewsWrap" class="grid-3"></div>
+      </div>
+    </section>
+
+    <!-- POPULAR -->
+    <section class="section">
+      <div class="container">
+        <h2 style="margin:0 0 12px">Popular right now</h2>
+        <div class="gallery" aria-label="Destination gallery">
+          <img src="https://images.unsplash.com/photo-1505764706515-aa95265c5abc?q=80&w=1200&auto=format&fit=crop" alt="Santorini" />
+          <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?q=80&w=1200&auto=format&fit=crop" alt="Kyoto" />
+          <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1200&auto=format&fit=crop" alt="New York" />
+          <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?q=80&w=1200&auto=format&fit=crop" alt="Cappadocia" />
+          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop" alt="Iceland" />
+          <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=1200&auto=format&fit=crop" alt="Paris" />
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 8px">Simple, fair pricing</h2>
+        <p class="muted" style="margin:0 0 20px">Try every feature free for 7 days — cancel anytime.</p>
+        <div class="grid-3">
+          <div class="card"><div class="muted">Starter</div><div style="font-size:2.1rem;font-weight:800">Free</div><ul class="muted" style="padding-left:1rem;line-height:2"><li>1 active trip</li><li>Basic itinerary builder</li><li>Community guides</li></ul><button class="btn secondary">Get started</button></div>
+          <div class="card" style="outline:2px solid var(--brand);box-shadow:0 0 0 6px rgba(168,124,82,.15)"><div class="muted">Pro</div><div style="font-size:2.1rem;font-weight:800">$6<span style="font-size:1rem;font-weight:600">/mo</span></div><ul class="muted" style="padding-left:1rem;line-height:2"><li>Unlimited trips</li><li>AI optimizations</li><li>Shared budgets</li><li>Offline access</li></ul><button class="btn">Start free trial</button></div>
+          <div class="card"><div class="muted">Teams</div><div style="font-size:2.1rem;font-weight:800">$12<span style="font-size:1rem;font-weight:600">/user</span></div><ul class="muted" style="padding-left:1rem;line-height:2"><li>Workspace & roles</li><li>Approvals</li><li>Priority support</li></ul><button class="btn secondary">Talk to sales</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="grid-3" style="align-items:start">
+          <div style="grid-column: span 2">
+            <h2 style="margin:0 0 10px">Contact us</h2>
+            <p class="muted">Questions, partnerships, or press? We’d love to hear from you.</p>
+            <form class="card" id="contact-form" style="display:grid;gap:.75rem">
+              <label><span class="muted">Name</span><input class="input" required name="name" placeholder="Your name" /></label>
+              <label><span class="muted">Email</span><input class="input" required type="email" name="email" placeholder="you@example.com" /></label>
+              <label><span class="muted">Message</span><textarea class="input" required name="message" rows="4" placeholder="How can we help?"></textarea></label>
+              <button class="btn" type="submit">Send message</button>
+              <p id="form-msg" class="muted" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+          <div class="card">
+            <h3>Company</h3>
+            <p class="muted">TripMate Labs<br/>123 Traveler Ave<br/>Anywhere, Earth</p>
+            <h3>Support</h3>
+            <p class="muted">help@tripmate.app</p>
+            <h3>Follow</h3>
+            <p class="muted">Instagram • X • TikTok</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GUIDE PLAN MODAL -->
+    <div id="guidePlanModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="guidePlanTitle">
+      <div class="dialog">
+        <header>
+          <h3 id="guidePlanTitle" style="margin:0">Guide Plan</h3>
+          <div style="display:flex;gap:8px">
+            <a class="btn" id="bookGuide" href="#" title="Checkout (demo)">Book with Stripe</a>
+            <button class="btn secondary" id="useThisPlan">Use this plan</button>
+            <button class="close" id="closeGuidePlan">Close</button>
+          </div>
+        </header>
+        <div id="guidePlanBody" style="display:grid;gap:10px"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+      <div>© <span id="year"></span> TripMate. All rights reserved.</div>
+      <div class="muted">Privacy • Terms • Cookies</div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const toggle = document.querySelector('.mobile-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if(toggle){
+      toggle.addEventListener('click', () => {
+        const open = mobileMenu.hasAttribute('hidden') === false;
+        if(open){ mobileMenu.setAttribute('hidden',''); toggle.setAttribute('aria-expanded','false'); }
+        else { mobileMenu.removeAttribute('hidden'); toggle.setAttribute('aria-expanded','true'); }
+      });
+    }
+
+    // CTA
+    document.getElementById('cta')?.addEventListener('click',()=>{
+      document.getElementById('plan').scrollIntoView({behavior:'smooth'});
+      const d=document.getElementById('heroDest').value; if(d) document.getElementById('dest').value=d;
+      const s=document.getElementById('heroStart').value; if(s) document.getElementById('startDate').value=s;
+    });
+
+    // Contact form demo
+    const form = document.getElementById('contact-form');
+    const msg = document.getElementById('form-msg');
+    form?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      if(!data.email.includes('@')){ msg.textContent = 'Please enter a valid email.'; return; }
+      msg.textContent = 'Thanks! We\'ll get back to you within 24 hours.';
+      form.reset();
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ---- DATA (mock) ----
+    const mockPOI = [
+      {name:'Göreme Open-Air Museum', type:'museum', lat:38.643, lng:34.833},
+      {name:'Love Valley', type:'nature', lat:38.673, lng:34.827},
+      {name:'Seten Restaurant', type:'food', lat:38.640, lng:34.827}
+    ];
+    const guides = [
+      {name:'John K.', city:'Nevşehir', langs:['EN','TR'], price:1200, rating:4.8, img:'https://images.unsplash.com/photo-1603344797033-f0f4f587ab60?q=80&w=200&auto=format&fit=crop'},
+      {name:'Sophia B.', city:'Nevşehir', langs:['EN','DE'], price:900, rating:4.6, img:'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=200&auto=format&fit=crop'},
+      {name:'David Y.', city:'Kayseri', langs:['EN','AR'], price:1500, rating:4.9, img:'https://images.unsplash.com/photo-1547425260-4a9b4aefc6b0?q=80&w=200&auto=format&fit=crop'}
+    ];
+    const suggestions = [
+      {title:'Cappadocia in 3 Days', desc:'Balloon ride, valleys, underground cities', price:'₺5,200', tag:'Nature'},
+      {title:'Istanbul Culture Break', desc:'Museums & historic walks', price:'₺3,100', tag:'Culture'},
+      {title:'Aegean Food Route', desc:'Alaçatı, Şirince, boutique restaurants', price:'₺4,400', tag:'Gastronomy'}
+    ];
+    const reviewData = [
+      {who:'Zeynep', text:'Our guide was super helpful and the route flowed well.', stars:5},
+      {who:'Mert', text:'Safety sharing made me feel relaxed.', stars:4}
+    ];
+
+    // ---- PLAN BUILDER + MAP ----
+    let planMap, planLayer;
+    function ensurePlanMap(){
+      if(!planMap){
+        planMap = L.map('planMap').setView([38.643,34.833], 11);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:18, attribution:'© OSM'}).addTo(planMap);
+        planLayer = L.layerGroup().addTo(planMap);
+      }
+    }
+    function buildPlan(){
+      const dest = document.getElementById('dest').value || 'Cappadocia';
+      const interest = document.getElementById('interest').value;
+      const out = document.getElementById('planOut');
+      const days = parseInt(document.getElementById('days').value||'3',10);
+      out.innerHTML = '';
+      for(let d=1; d<=days; d++){
+        const card = document.createElement('div');
+        card.className='card';
+        card.innerHTML = `<strong>Day ${d} • ${dest}</strong><br><span class='muted'>Places & activities (${interest})</span>`;
+        out.appendChild(card);
+      }
+      ensurePlanMap();
+      planLayer.clearLayers();
+      mockPOI.forEach(pt=> L.marker([pt.lat, pt.lng]).addTo(planLayer).bindPopup(pt.name));
+      planMap.fitBounds(L.latLngBounds(mockPOI.map(pt=>[pt.lat,pt.lng])), {padding:[20,20]});
+      const poisWrap = document.getElementById('pois');
+      poisWrap.innerHTML='';
+      mockPOI.forEach(x=>{
+        const c=document.createElement('div'); c.className='card';
+        c.innerHTML=`<strong>${x.name}</strong> <span class='muted'>(${x.type})</span>`; poisWrap.appendChild(c);
+      });
+    }
+    document.getElementById('buildPlan').addEventListener('click', buildPlan);
+
+    // ---- GUIDES FILTER ----
+    function renderGuides(){
+      const city = (document.getElementById('city').value||'').toLowerCase();
+      const lang = document.getElementById('lang').value;
+      const maxP = parseInt(document.getElementById('maxPrice').value||'999999',10);
+      const list = document.getElementById('guideList');
+      list.innerHTML = '';
+      guides.filter(g=>(!city||g.city.toLowerCase().includes(city)) && g.langs.includes(lang) && g.price<=maxP)
+        .forEach(g=>{
+          const row=document.createElement('div');
+          row.className='guide';
+          row.setAttribute('data-name', g.name);
+          row.innerHTML=`<img src="${g.img}" alt="${g.name}"><div><strong>${g.name}</strong><div class='muted'>${g.city} • ${g.langs.join(', ')} • ₺${g.price}</div></div><div>⭐ ${g.rating}</div>`;
+          list.appendChild(row);
+        });
+    }
+    ['city','lang','maxPrice'].forEach(id=>document.getElementById(id).addEventListener('input',renderGuides));
+    renderGuides();
+
+    // ---- FEATURED GUIDES ----
+    const featuredWrap = document.getElementById('featuredGuides');
+    function renderFeatured(){
+      featuredWrap.innerHTML='';
+      guides.slice(0,3).forEach(g=>{
+        const c=document.createElement('div');
+        c.className='mini-card';
+        c.setAttribute('data-name', g.name);
+        c.innerHTML=`<img src="${g.img}" alt="${g.name}"><div><strong>${g.name}</strong><div class='muted'>${g.city} • ${g.langs.join(', ')} • ₺${g.price}</div></div><div>⭐ ${g.rating}</div>`;
+        c.addEventListener('click', ()=>openGuidePlan(g.name));
+        featuredWrap.appendChild(c);
+      });
+    }
+    renderFeatured();
+
+    // ---- SUGGESTIONS ----
+    const sWrap = document.getElementById('suggestList');
+    suggestions.forEach(s=>{ const c=document.createElement('div'); c.className='card'; c.innerHTML=`<strong>${s.title}</strong> <span class='tag'>${s.tag}</span><br><span class='muted'>${s.desc}</span><div style='margin-top:6px'><strong>${s.price}</strong></div>`; sWrap.appendChild(c); });
+
+    // ---- REVIEWS ----
+    const rWrap = document.getElementById('reviewsWrap');
+    reviewData.forEach(x=>{ const c=document.createElement('div'); c.className='card'; c.innerHTML=`<strong>${x.who}</strong> – ${'⭐'.repeat(x.stars)}<br><span class='muted'>${x.text}</span>`; rWrap.appendChild(c); });
+
+    // ---- LIVE MAP (geolocation) ----
+    let liveMap, liveMarker, accCircle, watchId;
+    function initLive(){
+      if(!liveMap){
+        liveMap = L.map('liveMap').setView([38.7,34.85], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:18, attribution:'© OSM'}).addTo(liveMap);
+      }
+      if(navigator.geolocation){
+        if(watchId) navigator.geolocation.clearWatch(watchId);
+        watchId = navigator.geolocation.watchPosition(pos=>{
+          const {latitude:lat, longitude:lng, accuracy} = pos.coords;
+          if(!liveMarker){ liveMarker = L.marker([lat,lng]).addTo(liveMap).bindPopup('Me'); }
+          liveMarker.setLatLng([lat,lng]);
+          if(!accCircle){ accCircle = L.circle([lat,lng], {radius:accuracy}).addTo(liveMap); }
+          accCircle.setLatLng([lat,lng]); accCircle.setRadius(accuracy);
+          liveMap.setView([lat,lng]);
+        }, err=>{ alert('Location error: '+err.message); }, {enableHighAccuracy:true, maximumAge:5000});
+      } else { alert('Your browser does not support geolocation.'); }
+    }
+    const liveSection = document.getElementById('live');
+    const liveObserver = new IntersectionObserver((entries)=>{ if(entries[0].isIntersecting) initLive(); }, {threshold:.2});
+    liveObserver.observe(liveSection);
+
+    // Share toggle (demo)
+    document.getElementById('shareChk').addEventListener('change', (e)=>{
+      alert(e.target.checked ? 'Location sharing enabled (demo)' : 'Location sharing disabled (demo)');
+    });
+
+    // ---- GUIDE PLANS (click card -> modal) ----
+    const guidePlans = {
+      'John K.': [
+        {day:1, items:['Sunrise balloon viewpoint','Göreme Open-Air Museum','Avanos pottery workshop']},
+        {day:2, items:['Love Valley hike','Kaymaklı underground city','Red Valley sunset']},
+        {day:3, items:['Uçhisar Castle','Ortahisar photo walk','Local cuisine tasting']}
+      ],
+      'Sophia B.': [
+        {day:1, items:['Dolmabahçe Palace','Galataport walk','Karaköy food tour']},
+        {day:2, items:['Topkapi Palace','Hagia Sophia','Spice Bazaar & Bosphorus cruise']}
+      ],
+      'David Y.': [
+        {day:1, items:['Erciyes panorama','Kayseri city tour','Pastirma & manti tasting']},
+        {day:2, items:['Cappadocia valleys loop','ATV sunset ride']}
+      ]
+    };
+
+    const modal = document.getElementById('guidePlanModal');
+    const body = document.getElementById('guidePlanBody');
+    const title = document.getElementById('guidePlanTitle');
+    let currentGuide = null;
+
+    function openGuidePlan(name){
+      currentGuide = name;
+      title.textContent = `${name} — Suggested Itinerary`;
+      const plan = guidePlans[name] || [{day:1, items:['Custom day plan will be arranged after booking.']}];
+      body.innerHTML = '';
+      plan.forEach(d=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<strong>Day ${d.day}</strong><ul style="margin:.4rem 0 0 1rem">${d.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+        body.appendChild(card);
+      });
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+    }
+
+    document.getElementById('closeGuidePlan').addEventListener('click', ()=>{
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+    });
+    modal.addEventListener('click', (e)=>{ if(e.target.id==='guidePlanModal'){ document.getElementById('closeGuidePlan').click(); }});
+
+    // delegate clicks from lists
+    document.getElementById('guideList').addEventListener('click', (e)=>{
+      const card = e.target.closest('.guide');
+      if(!card) return;
+      const name = card.getAttribute('data-name') || card.querySelector('strong')?.textContent?.trim();
+      if(name) openGuidePlan(name);
+    });
+
+    // Use plan -> fill Plan Trip section
+    document.getElementById('useThisPlan').addEventListener('click', ()=>{
+      if(!currentGuide) return;
+      const plan = guidePlans[currentGuide];
+      const out = document.getElementById('planOut');
+      out.innerHTML = '';
+      plan.forEach(d=>{
+        const card = document.createElement('div');
+        card.className='card';
+        card.innerHTML = `<strong>Day ${d.day} • ${currentGuide}</strong><ul style='margin:.4rem 0 0 1rem'>${d.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+        out.appendChild(card);
+      });
+      document.getElementById('plan').scrollIntoView({behavior:'smooth'});
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+    });
+
+    // ICS DOWNLOAD
+    function buildICS(){
+      const titleBase = 'TripMate Itinerary';
+      const startStr = document.getElementById('startDate').value || new Date().toISOString().slice(0,10);
+      const days = parseInt(document.getElementById('days').value||'3',10);
+      const dest = document.getElementById('dest').value || 'Cappadocia';
+      const items = Array.from(document.querySelectorAll('#planOut .card')).map((el,i)=>{
+        const text = el.innerText.replace(/\n/g,' ');
+        return {summary:`${titleBase} — Day ${i+1} • ${dest}`, description:text};
+      });
+      function dt(n){ const d=new Date(startStr); d.setDate(d.getDate()+n); return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z'; }
+      let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\nPRODID:-//TripMate//EN\n';
+      items.slice(0,days).forEach((it,i)=>{
+        ics+=`BEGIN:VEVENT\nUID:${Date.now()}-${i}@tripmate\nDTSTAMP:${dt(0)}\nDTSTART:${dt(i)}\nDTEND:${dt(i)}\nSUMMARY:${it.summary}\nDESCRIPTION:${it.description}\nEND:VEVENT\n`;
+      });
+      ics+='END:VCALENDAR';
+      const blob=new Blob([ics],{type:'text/calendar'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='tripmate-itinerary.ics'; a.click(); URL.revokeObjectURL(a.href);
+    }
+    document.getElementById('downloadICS').addEventListener('click', buildICS);
+
+    // ---- LANGUAGE TOGGLE (EN/TR basic) ----
+    const i18n = {
+      en:{menu:{features:'Features',plan:'Plan Trip',guides:'Local Guides',live:'Safety',reviews:'Reviews',pricing:'Pricing',contact:'Contact'},
+          hero:{lead:'TripMate helps you build smart itineraries, find trusted local guides, and share your live location with loved ones.',cta:'Start planning'}},
+      tr:{menu:{features:'Özellikler',plan:'Seyahat Planı',guides:'Yerel Rehberler',live:'Güvenlik',reviews:'Yorumlar',pricing:'Fiyatlandırma',contact:'İletişim'},
+          hero:{lead:'TripMate; akıllı planlar yapmanıza, güvenilir yerel rehberler bulmanıza ve canlı konumunuzu sevdiklerinizle paylaşmanıza yardım eder.',cta:'Planlamaya başla'}}
+    };
+    function setLang(L){
+      const t=i18n[L]; document.documentElement.lang=L;
+      mFeatures.textContent=t.menu.features; mPlan.textContent=t.menu.plan; mGuides.textContent=t.menu.guides; mLive.textContent=t.menu.live; mReviews.textContent=t.menu.reviews; mPricing.textContent=t.menu.pricing; mContact.textContent=t.menu.contact;
+      document.getElementById('heroLead').textContent=t.hero.lead;
+      document.getElementById('cta').textContent=t.hero.cta;
+      document.getElementById('heroDest').setAttribute('placeholder', L==='en'?'Where to? e.g., Rome, Kyoto, Cappadocia':'Nereye? Örn. Roma, Kyoto, Kapadokya');
+    }
+    document.getElementById('langEN').onclick=()=>setLang('en');
+    document.getElementById('langTR').onclick=()=>setLang('tr');
+    setLang('en');
+
+    // Featured section also clickable via data-name
+    document.getElementById('featuredGuides').addEventListener('click', (e)=>{
+      const card = e.target.closest('.mini-card');
+      if(!card) return;
+      const name = card.getAttribute('data-name');
+      if(name) openGuidePlan(name);
+    });
+  </script>
+</body>
+</html>
