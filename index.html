@@ -611,25 +611,65 @@
         </div>
       </div>
     </section>
-<!-- GUIDE APPLICATION -->
+<!-- GUIDE / BUDDY APPLICATION -->
 <section id="guide-apply" class="section">
   <div class="container">
-    <h2 style="margin:0 0 10px">Rehber olmak istiyorum</h2>
+    <h2 style="margin:0 0 10px">Rehber / Yol Arkadaşı Başvurusu</h2>
     <p class="muted" style="margin:0 0 14px">
-      Eğer bölgeni iyi biliyorsan ve TripMate üzerinde rehber olarak görünmek istiyorsan, aşağıdaki formu doldur.
-      Başvurun onaylandıktan sonra rehber listesinde görüneceksin.
+      TripMate üzerinde profesyonel rehber veya arkadaşça yol arkadaşı olarak görünmek için aşağıdaki formu doldur.
+      Güvenlik için bazı bilgiler zorunludur. Fotoğraf ve belge yüklemeleri sadece ekibimiz tarafından görülecektir.
     </p>
 
     <div class="grid-2">
+      <!-- SOL: FORM -->
       <form id="guide-apply-form" class="card" style="display:grid;gap:.7rem">
+        <h3>Kişisel Bilgiler</h3>
+
         <label>
           <span class="muted">Ad Soyad</span>
           <input class="input" name="fullName" required placeholder="Örn. Ayşe Kaya">
         </label>
 
         <label>
+          <span class="muted">Doğum Tarihi</span>
+          <input class="input" type="date" name="birthdate" required>
+        </label>
+
+        <label>
+          <span class="muted">TC / Pasaport Numarası</span>
+          <input class="input" name="idNumber" required placeholder="Örn. 12345678901">
+        </label>
+
+        <label>
           <span class="muted">Şehir / Bölge</span>
           <input class="input" name="city" required placeholder="Örn. Kapadokya, İstanbul">
+        </label>
+
+        <h3>İletişim</h3>
+
+        <label>
+          <span class="muted">Telefon</span>
+          <input class="input" name="phone" required placeholder="+90 ...">
+        </label>
+
+        <label>
+          <span class="muted">Acil Durum Kişisi</span>
+          <input class="input" name="emergencyName" required placeholder="Örn. Anne / Kardeş / Arkadaş">
+        </label>
+
+        <label>
+          <span class="muted">Acil Durum Telefonu</span>
+          <input class="input" name="emergencyPhone" required placeholder="+90 ...">
+        </label>
+
+        <h3>Rol ve Uzmanlık</h3>
+
+        <label>
+          <span class="muted">Rolün</span>
+          <select class="input" name="role" required>
+            <option value="guide">Profesyonel Rehber</option>
+            <option value="buddy">Arkadaşça Yol Arkadaşı</option>
+          </select>
         </label>
 
         <label>
@@ -639,44 +679,65 @@
 
         <label>
           <span class="muted">Günlük Ücret (₺)</span>
-          <input class="input" type="number" name="pricePerDay" required placeholder="1500">
+          <input class="input" type="number" min="0" name="pricePerDay" required placeholder="Örn. 1500">
         </label>
 
-        <label style="display:flex;align-items:center;gap:.5rem">
+        <label style="display:flex;align-items:center;gap:.5rem;margin-top:.3rem">
           <input type="checkbox" name="isLicensed">
           <span class="muted">Resmî / lisanslı rehberim</span>
         </label>
 
         <label>
-          <span class="muted">Kendini anlat</span>
-          <textarea class="input" name="about" rows="4" required placeholder="Kısaca kendini anlat."></textarea>
+          <span class="muted">Kendini anlat (uzmanlık, deneyim vb.)</span>
+          <textarea class="input" name="about" rows="4" required></textarea>
+        </label>
+
+        <h3>Fotoğraf & Belge</h3>
+
+        <label>
+          <span class="muted">Profil fotoğrafı (yüzün net görünsün)</span>
+          <input class="input" type="file" name="profilePhoto" accept="image/*">
         </label>
 
         <label>
-          <span class="muted">Instagram</span>
-          <input class="input" name="instagram" placeholder="@kullanici">
+          <span class="muted">Kimlik / Rehberlik belgesi (PDF veya fotoğraf)</span>
+          <input class="input" type="file" name="idDocument" accept=".pdf,image/*">
         </label>
 
-        <label>
-          <span class="muted">WhatsApp</span>
-          <input class="input" name="whatsapp" placeholder="+90...">
+        <h3>Güvenlik Onayı</h3>
+
+        <label style="display:flex;align-items:center;gap:.6rem">
+          <input type="checkbox" name="noCriminal" required>
+          <span class="muted">Adli sicil kaydımda problem olmadığını beyan ediyorum.</span>
         </label>
 
-        <button class="btn" type="submit">Başvurumu gönder</button>
+        <label style="display:flex;align-items:center;gap:.6rem">
+          <input type="checkbox" name="infoCorrect" required>
+          <span class="muted">Verdiğim bilgilerin doğru olduğunu onaylıyorum.</span>
+        </label>
+
+        <button class="btn" type="submit">Başvuruyu Gönder</button>
         <p id="guide-apply-msg" class="muted" style="min-height:1.2rem"></p>
       </form>
 
+      <!-- SAĞ: BİLGİ KARTI -->
       <div class="card" style="display:grid;gap:.5rem">
-        <h3>Başvuru nasıl işliyor?</h3>
-        <ul class="muted" style="padding-left:1.1rem;line-height:1.8">
-          <li>İlk önce giriş yapmış olman gerekiyor.</li>
-          <li>Formu gönderince başvurun "pending" durumuna düşer.</li>
-          <li>Onaylanınca rehberler listesinde görünürsün.</li>
+        <h3>Başvuru süreci nasıl işliyor?</h3>
+        <ul class="muted" style="padding-left:1rem;line-height:1.8;font-size:.95rem">
+          <li>Önce TripMate hesabına e-posta + şifre ile giriş yapman gerekiyor.</li>
+          <li>Formu gönderdiğinde başvurun “beklemede” durumuna alınır.</li>
+          <li>Ekibimiz bilgilerini ve belgelerini inceler.</li>
+          <li>Onaylandığında profilin rehber / yol arkadaşı listesinde görünür.</li>
         </ul>
+        <p class="muted" style="font-size:.85rem;margin-top:.4rem">
+          Not: Şu an demo aşamasındayız. Veriler Firestore + Storage’da güvenli şekilde saklanır
+          ve herkese açık gösterilmez.
+        </p>
       </div>
     </div>
   </div>
 </section>
+
 
     <!-- COMPANIONS -->
     <section id="companions" class="section">
