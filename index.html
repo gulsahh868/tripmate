@@ -196,14 +196,19 @@
     }
   </style>
  <script type="module">
-  // Import the functions you need from the SDKs you need
+ <script type="module">
+  // Firebase SDK import
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  // SENİN Firebase config'in
   const firebaseConfig = {
     apiKey: "AIzaSyCjgmWgVm7YCZs3Lr9EWYJ5XyACwn6geYc",
     authDomain: "tripmate-c848e.firebaseapp.com",
@@ -214,9 +219,72 @@
     measurementId: "G-R7BFG9S53X"
   };
 
-  // Initialize Firebase
+  // Firebase'i başlat
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+
+  console.log("✅ Firebase bağlı, app adı:", app.name);
+
+  // Login / Sign up davranışı
+  window.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("auth-form");
+    const emailInput = document.getElementById("auth-email");
+    const passInput = document.getElementById("auth-pass");
+    const modeInput = document.getElementById("auth-mode");
+    const msgEl = document.getElementById("auth-msg");
+    const userEl = document.getElementById("auth-user");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    // Eğer bu elemanlar yoksa (eski versiyon) sessizce çık
+    if (!form || !emailInput || !passInput) return;
+
+    // Form gönderilince (login / sign up)
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msgEl.textContent = "İşleniyor...";
+
+      const email = emailInput.value.trim();
+      const password = passInput.value;
+
+      try {
+        if (modeInput.checked) {
+          // Yeni hesap oluştur
+          await createUserWithEmailAndPassword(auth, email, password);
+          msgEl.textContent = "🎉 Hesap oluşturuldu ve giriş yapıldı.";
+        } else {
+          // Var olan hesaba giriş
+          await signInWithEmailAndPassword(auth, email, password);
+          msgEl.textContent = "✅ Giriş başarılı.";
+        }
+      } catch (err) {
+        console.error(err);
+        // Hata mesajını biraz sadeleştir
+        msgEl.textContent = "⚠️ " + (err.message || "Bir hata oluştu.");
+      }
+    });
+
+    // Çıkış butonu
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+      } catch (err) {
+        console.error(err);
+        msgEl.textContent = "Çıkış yapılırken hata oluştu.";
+      }
+    });
+
+    // Kullanıcı durumu değişince (giriş/çıkış)
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userEl.textContent = "Giriş yapan: " + (user.email || "Bilinmeyen kullanıcı");
+        logoutBtn.style.display = "inline-flex";
+      } else {
+        userEl.textContent = "Şu anda giriş yapmış kimse yok.";
+        logoutBtn.style.display = "none";
+      }
+    });
+  });
 </script>
 
 </head>
@@ -480,6 +548,46 @@
           <div class="card"><div class="muted">Starter</div><div style="font-size:2.1rem;font-weight:800">Free</div><ul class="muted" style="padding-left:1rem;line-height:2"><li>1 active trip</li><li>Basic itinerary builder</li><li>Community guides</li></ul><button class="btn secondary">Get started</button></div>
           <div class="card" style="outline:2px solid var(--brand);box-shadow:0 0 0 6px rgba(168,124,82,.15)"><div class="muted">Pro</div><div style="font-size:2.1rem;font-weight:800">$6<span style="font-size:1rem;font-weight:600">/mo</span></div><ul class="muted" style="padding-left:1rem;line-height:2"><li>Unlimited trips</li><li>AI optimizations</li><li>Shared budgets</li><li>Offline access</li></ul><button class="btn">Start free trial</button></div>
           <div class="card"><div class="muted">Teams</div><div style="font-size:2.1rem;font-weight:800">$12<span style="font-size:1rem;font-weight:600">/user</span></div><ul class="muted" style="padding-left:1rem;line-height:2"><li>Workspace & roles</li><li>Approvals</li><li>Priority support</li></ul><button class="btn secondary">Talk to sales</button></div>
+        </div>
+      </div>
+    </section>
+    <!-- AUTH / LOGIN -->
+    <section id="auth" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 8px">Login / Sign up</h2>
+        <p class="muted" style="margin:0 0 20px">
+          E-posta ve şifre ile yeni hesap oluşturabilir veya var olan hesabınla giriş yapabilirsin.
+        </p>
+
+        <div class="grid-2">
+          <!-- Form -->
+          <form id="auth-form" class="card" style="display:grid;gap:.75rem">
+            <label>
+              <span class="muted">Email</span>
+              <input class="input" id="auth-email" type="email" required placeholder="you@example.com" />
+            </label>
+            <label>
+              <span class="muted">Password</span>
+              <input class="input" id="auth-pass" type="password" required minlength="6" placeholder="Min. 6 karakter" />
+            </label>
+            <label style="display:flex;align-items:center;gap:.4rem">
+              <input id="auth-mode" type="checkbox" />
+              <span class="muted" style="font-size:.9rem">
+                Yeni hesap oluştur (işaretli değilse sadece giriş yapar)
+              </span>
+            </label>
+            <button class="btn" type="submit">Devam</button>
+            <p id="auth-msg" class="muted" style="min-height:1.2em"></p>
+          </form>
+
+          <!-- Durum kutusu -->
+          <div class="card">
+            <h3 style="margin-top:0">Hesap durumu</h3>
+            <p id="auth-user" class="muted">Şu anda giriş yapmış kimse yok.</p>
+            <button id="logoutBtn" class="btn secondary" type="button" style="display:none;margin-top:.5rem">
+              Çıkış yap
+            </button>
+          </div>
         </div>
       </div>
     </section>
