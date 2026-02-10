@@ -114,52 +114,6 @@
     }
   </style>
 
-  <!-- FIREBASE + AUTH + PROFILE -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged,
-      sendEmailVerification,
-      sendPasswordResetEmail
-    } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      setDoc,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-    import {
-      getStorage,
-      ref,
-      uploadBytes,
-      getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCjgmWgVm7YCZs3Lr9EWYJ5XyACwn6geYc",
-      authDomain: "tripmate-c848e.firebaseapp.com",
-      projectId: "tripmate-c848e",
-      storageBucket: "tripmate-c848e.firebasestorage.app",
-      messagingSenderId: "430836514593",
-      appId: "1:430836514593:web:c9198979d2fc1417144860",
-      measurementId: "G-R7BFG9S53X"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    console.log("✅ Firebase bağlı, app adı:", app.name);
-
-    window.addEventListener("DOMContentLoaded", () => {
       // --- AUTH ELEMENTLERİ ---
       const form = document.getElementById("auth-form");
       const emailInput = document.getElementById("auth-email");
@@ -1308,5 +1262,244 @@
       if(name) openGuidePlan(name);
     });
   </script>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged,
+    sendEmailVerification,
+    sendPasswordResetEmail
+  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp,
+    collection,
+    addDoc
+  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+  import {
+    getStorage,
+    ref,
+    uploadBytes,
+    getDownloadURL
+  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCjgmWgVm7YCZs3Lr9EWYJ5XyACwn6geYc",
+    authDomain: "tripmate-c848e.firebaseapp.com",
+    projectId: "tripmate-c848e",
+    storageBucket: "tripmate-c848e.firebasestorage.app",
+    messagingSenderId: "430836514593",
+    appId: "1:430836514593:web:c9198979d2fc1417144860",
+    measurementId: "G-R7BFG9S53X"
+  };
+
+  const app      = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth     = getAuth(app);
+  const db       = getFirestore(app);
+  const storage  = getStorage(app);
+
+  console.log("✅ Firebase bağlı, app adı:", app.name);
+
+  // Kullanıcı Firestore kaydı yoksa oluşturan fonksiyon
+  async function ensureUserDoc(user) {
+    if (!user) return;
+
+    const refDoc = doc(db, "users", user.uid);
+    const snap   = await getDoc(refDoc);
+
+    if (!snap.exists()) {
+      await setDoc(refDoc, {
+        email: user.email || "",
+        role: null,         // guide / buddy / traveler - sonra profil ekranında doldurulur
+        createdAt: serverTimestamp()
+      });
+      console.log("🗂 Firestore: users koleksiyonuna yeni kullanıcı eklendi:", user.uid);
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    // AUTH form elemanları
+    const form       = document.getElementById("auth-form");
+    const emailInput = document.getElementById("auth-email");
+    const passInput  = document.getElementById("auth-pass");
+    const modeInput  = document.getElementById("auth-mode");
+    const msgEl      = document.getElementById("auth-msg");
+    const userEl     = document.getElementById("auth-user");
+    const logoutBtn  = document.getElementById("logoutBtn");
+    const forgotBtn  = document.getElementById("forgotBtn");
+
+    // Rehber başvuru formu
+    const guideForm  = document.getElementById("guide-apply-form");
+    const guideMsg   = document.getElementById("guide-apply-msg");
+    const profileInput = guideForm?.querySelector('input[name="profilePhoto"]');
+    const idDocInput   = guideForm?.querySelector('input[name="idDocument"]');
+
+    // ---------- GİRİŞ / KAYIT ----------
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        msgEl.textContent = "İşleniyor...";
+
+        const email = emailInput.value.trim();
+        const password = passInput.value;
+
+        try {
+          if (modeInput.checked) {
+            // KAYIT
+            const cred = await createUserWithEmailAndPassword(auth, email, password);
+            await ensureUserDoc(cred.user);
+
+            try {
+              await sendEmailVerification(cred.user);
+              msgEl.textContent = "🎉 Hesap oluşturuldu. Lütfen e-postanı kontrol edip doğrula.";
+            } catch (mailErr) {
+              console.error(mailErr);
+              msgEl.textContent = "Hesap oluşturuldu ama doğrulama maili gönderilirken hata oldu.";
+            }
+          } else {
+            // GİRİŞ
+            const cred = await signInWithEmailAndPassword(auth, email, password);
+            await ensureUserDoc(cred.user);
+            msgEl.textContent = "✅ Giriş başarılı.";
+          }
+        } catch (err) {
+          console.error(err);
+          msgEl.textContent = "⚠️ " + (err.message || "Bir hata oluştu.");
+        }
+      });
+
+      // Şifremi unuttum
+      forgotBtn?.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+        if (!email) {
+          msgEl.textContent = "Şifre sıfırlamak için önce e-posta yaz.";
+          return;
+        }
+        msgEl.textContent = "Şifre sıfırlama maili gönderiliyor...";
+        try {
+          await sendPasswordResetEmail(auth, email);
+          msgEl.textContent = "📧 Şifre sıfırlama linki e-postana gönderildi.";
+        } catch (err) {
+          console.error(err);
+          msgEl.textContent = "Şifre sıfırlama sırasında hata: " + (err.message || "");
+        }
+      });
+
+      // Çıkış
+      logoutBtn?.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+        } catch (err) {
+          console.error(err);
+          msgEl.textContent = "Çıkış yapılırken hata oluştu.";
+        }
+      });
+    }
+
+    // ---------- REHBER / BUDDY BAŞVURU FORMU ----------
+    if (guideForm) {
+      guideForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        guideMsg.textContent = "Gönderiliyor...";
+
+        const user = auth.currentUser;
+        if (!user) {
+          guideMsg.textContent = "Lütfen önce giriş yap / kayıt ol, sonra başvuru gönder.";
+          return;
+        }
+
+        const formData = new FormData(guideForm);
+
+        // Dosya yükleme (profil foto + belge)
+        let profilePhotoUrl = null;
+        let idDocumentUrl   = null;
+
+        try {
+          if (profileInput?.files[0]) {
+            const file = profileInput.files[0];
+            const storageRef = ref(
+              storage,
+              `guideUploads/${user.uid}/profile-${Date.now()}-${file.name}`
+            );
+            await uploadBytes(storageRef, file);
+            profilePhotoUrl = await getDownloadURL(storageRef);
+          }
+
+          if (idDocInput?.files[0]) {
+            const file = idDocInput.files[0];
+            const storageRef = ref(
+              storage,
+              `guideUploads/${user.uid}/id-${Date.now()}-${file.name}`
+            );
+            await uploadBytes(storageRef, file);
+            idDocumentUrl = await getDownloadURL(storageRef);
+          }
+        } catch (uploadErr) {
+          console.error(uploadErr);
+          guideMsg.textContent = "Dosyalar yüklenirken hata oluştu. Lütfen tekrar dene.";
+          return;
+        }
+
+        const data = {
+          uid: user.uid,
+          email: user.email || "",
+          fullName: formData.get("fullName") || "",
+          birthdate: formData.get("birthdate") || "",
+          idNumber: formData.get("idNumber") || "",
+          city: formData.get("city") || "",
+          phone: formData.get("phone") || "",
+          emergencyName: formData.get("emergencyName") || "",
+          emergencyPhone: formData.get("emergencyPhone") || "",
+          role: formData.get("role") || "guide",
+          langs: (formData.get("langs") || "")
+            .toString()
+            .split(",")
+            .map(s => s.trim())
+            .filter(Boolean),
+          pricePerDay: Number(formData.get("pricePerDay") || 0),
+          isLicensed: formData.get("isLicensed") === "on",
+          about: formData.get("about") || "",
+          noCriminal: formData.get("noCriminal") === "on",
+          infoCorrect: formData.get("infoCorrect") === "on",
+          profilePhotoUrl,
+          idDocumentUrl,
+          status: "pending",            // pending / approved / rejected
+          createdAt: serverTimestamp()
+        };
+
+        try {
+          await addDoc(collection(db, "guideApplications"), data);
+          guideMsg.textContent = "🎉 Başvurun alındı. Ekibimiz inceleyip seninle iletişime geçecek.";
+          guideForm.reset();
+        } catch (err) {
+          console.error(err);
+          guideMsg.textContent = "Gönderirken hata oluştu: " + (err.message || "");
+        }
+      });
+    }
+
+    // ---------- KULLANICI DURUMU ----------
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await ensureUserDoc(user);
+        const verifiedText = user.emailVerified ? " (doğrulanmış)" : " (doğrulanmamış)";
+        if (userEl) userEl.textContent = "Giriş yapan: " + (user.email || "Bilinmeyen kullanıcı") + verifiedText;
+        if (logoutBtn) logoutBtn.style.display = "inline-flex";
+      } else {
+        if (userEl) userEl.textContent = "Şu anda giriş yapmış kimse yok.";
+        if (logoutBtn) logoutBtn.style.display = "none";
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
