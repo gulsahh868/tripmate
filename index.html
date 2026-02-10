@@ -215,7 +215,29 @@
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
   </script>
-  <!-- 🔥 Firebase SDK SON -->
+ <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCjgmWgVm7YCZs3Lr9EWYJ5XyACwn6geYc",
+    authDomain: "tripmate-c848e.firebaseapp.com",
+    projectId: "tripmate-c848e",
+    storageBucket: "tripmate-c848e.firebasestorage.app",
+    messagingSenderId: "430836514593",
+    appId: "1:430836514593:web:c9198979d2fc1417144860",
+    measurementId: "G-R7BFG9S53X"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 
 </head>
 <body>
