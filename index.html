@@ -1,5 +1,4 @@
-
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -195,98 +194,87 @@
       .gallery{grid-template-columns:repeat(2,1fr)}
     }
   </style>
- <script type="module">
- <script type="module">
-  // Firebase SDK import
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
 
-  // SENİN Firebase config'in
-  const firebaseConfig = {
-    apiKey: "AIzaSyCjgmWgVm7YCZs3Lr9EWYJ5XyACwn6geYc",
-    authDomain: "tripmate-c848e.firebaseapp.com",
-    projectId: "tripmate-c848e",
-    storageBucket: "tripmate-c848e.firebasestorage.app",
-    messagingSenderId: "430836514593",
-    appId: "1:430836514593:web:c9198979d2fc1417144860",
-    measurementId: "G-R7BFG9S53X"
-  };
+  <!-- FIREBASE + AUTH -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
 
-  // Firebase'i başlat
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  const auth = getAuth(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyCjgmWgVm7YCZs3Lr9EWYJ5XyACwn6geYc",
+      authDomain: "tripmate-c848e.firebaseapp.com",
+      projectId: "tripmate-c848e",
+      storageBucket: "tripmate-c848e.firebasestorage.app",
+      messagingSenderId: "430836514593",
+      appId: "1:430836514593:web:c9198979d2fc1417144860",
+      measurementId: "G-R7BFG9S53X"
+    };
 
-  console.log("✅ Firebase bağlı, app adı:", app.name);
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
 
-  // Login / Sign up davranışı
-  window.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("auth-form");
-    const emailInput = document.getElementById("auth-email");
-    const passInput = document.getElementById("auth-pass");
-    const modeInput = document.getElementById("auth-mode");
-    const msgEl = document.getElementById("auth-msg");
-    const userEl = document.getElementById("auth-user");
-    const logoutBtn = document.getElementById("logoutBtn");
+    console.log("✅ Firebase bağlı, app adı:", app.name);
 
-    // Eğer bu elemanlar yoksa (eski versiyon) sessizce çık
-    if (!form || !emailInput || !passInput) return;
+    window.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("auth-form");
+      const emailInput = document.getElementById("auth-email");
+      const passInput = document.getElementById("auth-pass");
+      const modeInput = document.getElementById("auth-mode");
+      const msgEl = document.getElementById("auth-msg");
+      const userEl = document.getElementById("auth-user");
+      const logoutBtn = document.getElementById("logoutBtn");
 
-    // Form gönderilince (login / sign up)
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      msgEl.textContent = "İşleniyor...";
+      if (!form) return;
 
-      const email = emailInput.value.trim();
-      const password = passInput.value;
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        msgEl.textContent = "İşleniyor...";
 
-      try {
-        if (modeInput.checked) {
-          // Yeni hesap oluştur
-          await createUserWithEmailAndPassword(auth, email, password);
-          msgEl.textContent = "🎉 Hesap oluşturuldu ve giriş yapıldı.";
-        } else {
-          // Var olan hesaba giriş
-          await signInWithEmailAndPassword(auth, email, password);
-          msgEl.textContent = "✅ Giriş başarılı.";
+        const email = emailInput.value.trim();
+        const password = passInput.value;
+
+        try {
+          if (modeInput.checked) {
+            await createUserWithEmailAndPassword(auth, email, password);
+            msgEl.textContent = "🎉 Hesap oluşturuldu ve giriş yapıldı.";
+          } else {
+            await signInWithEmailAndPassword(auth, email, password);
+            msgEl.textContent = "✅ Giriş başarılı.";
+          }
+        } catch (err) {
+          console.error(err);
+          msgEl.textContent = "⚠️ " + (err.message || "Bir hata oluştu.");
         }
-      } catch (err) {
-        console.error(err);
-        // Hata mesajını biraz sadeleştir
-        msgEl.textContent = "⚠️ " + (err.message || "Bir hata oluştu.");
-      }
-    });
+      });
 
-    // Çıkış butonu
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-      } catch (err) {
-        console.error(err);
-        msgEl.textContent = "Çıkış yapılırken hata oluştu.";
-      }
-    });
+      logoutBtn?.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+        } catch (err) {
+          console.error(err);
+          msgEl.textContent = "Çıkış yapılırken hata oluştu.";
+        }
+      });
 
-    // Kullanıcı durumu değişince (giriş/çıkış)
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        userEl.textContent = "Giriş yapan: " + (user.email || "Bilinmeyen kullanıcı");
-        logoutBtn.style.display = "inline-flex";
-      } else {
-        userEl.textContent = "Şu anda giriş yapmış kimse yok.";
-        logoutBtn.style.display = "none";
-      }
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          userEl.textContent = "Giriş yapan: " + (user.email || "Bilinmeyen kullanıcı");
+          if (logoutBtn) logoutBtn.style.display = "inline-flex";
+        } else {
+          userEl.textContent = "Şu anda giriş yapmış kimse yok.";
+          if (logoutBtn) logoutBtn.style.display = "none";
+        }
+      });
     });
-  });
-</script>
-
+  </script>
 </head>
 <body>
   <header>
@@ -302,7 +290,6 @@
           <li><a id="mFeatures" href="#features">Features</a></li>
           <li><a id="mPlan" href="#plan">Plan Trip</a></li>
           <li><a id="mGuides" href="#guides">Local Guides</a></li>
-          <!-- NEW MENU ITEM -->
           <li><a id="mCompanions" href="#companions">How to explore?</a></li>
           <li><a id="mLive" href="#live">Safety</a></li>
           <li><a id="mReviews" href="#reviews">Reviews</a></li>
@@ -316,7 +303,6 @@
         <li><a href="#features">Features</a></li>
         <li><a href="#plan">Plan Trip</a></li>
         <li><a href="#guides">Local Guides</a></li>
-        <!-- NEW MOBILE MENU ITEM -->
         <li><a href="#companions">How to explore?</a></li>
         <li><a href="#live">Safety</a></li>
         <li><a href="#reviews">Reviews</a></li>
@@ -346,6 +332,46 @@
             <div class="card" style="padding:14px"><div class="icon">🗺️</div><div style="font-weight:700">Daily plans</div><div class="muted">Optimized schedules with maps.</div></div>
             <div class="card" style="padding:14px"><div class="icon">🧭</div><div style="font-weight:700">Local guides</div><div class="muted">Filter by language, price, rating.</div></div>
             <div class="card" style="padding:14px"><div class="icon">🛰️</div><div style="font-weight:700">Live safety</div><div class="muted">Share live location + SOS.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTH SECTION -->
+    <section id="auth" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 10px">Giriş / Kayıt</h2>
+        <p class="muted" style="margin:0 0 14px">
+          TripMate hesabınla rehberleri, yol arkadaşlarını ve güvenlik özelliklerini kişisel profilinle kullan.
+        </p>
+        <div class="grid-2">
+          <form id="auth-form" class="card" style="display:grid;gap:.7rem">
+            <label>
+              <span class="muted">E-posta</span>
+              <input id="auth-email" class="input" type="email" required placeholder="you@example.com">
+            </label>
+            <label>
+              <span class="muted">Şifre</span>
+              <input id="auth-pass" class="input" type="password" required placeholder="En az 6 karakter">
+            </label>
+            <label style="display:flex;align-items:center;gap:.5rem;margin-top:.3rem">
+              <input id="auth-mode" type="checkbox">
+              <span class="muted">Yeni hesap oluşturmak istiyorum</span>
+            </label>
+            <button class="btn" type="submit">Devam et</button>
+            <p id="auth-msg" class="muted" style="min-height:1.2rem"></p>
+          </form>
+
+          <div class="card" style="display:grid;gap:.6rem">
+            <h3>Hesap durumu</h3>
+            <p id="auth-user" class="muted">Şu anda giriş yapmış kimse yok.</p>
+            <button id="logoutBtn" class="btn secondary" style="display:none;width:fit-content">
+              Çıkış yap
+            </button>
+            <p class="muted" style="font-size:.85rem;margin-top:.5rem">
+              Demo aşamasında sadece e-posta + şifre ile giriş / kayıt vardır.
+              Sonraki adımda Google, Apple gibi girişler eklenebilir.
+            </p>
           </div>
         </div>
       </div>
@@ -551,46 +577,6 @@
         </div>
       </div>
     </section>
-    <!-- AUTH / LOGIN -->
-    <section id="auth" class="section">
-      <div class="container">
-        <h2 style="margin:0 0 8px">Login / Sign up</h2>
-        <p class="muted" style="margin:0 0 20px">
-          E-posta ve şifre ile yeni hesap oluşturabilir veya var olan hesabınla giriş yapabilirsin.
-        </p>
-
-        <div class="grid-2">
-          <!-- Form -->
-          <form id="auth-form" class="card" style="display:grid;gap:.75rem">
-            <label>
-              <span class="muted">Email</span>
-              <input class="input" id="auth-email" type="email" required placeholder="you@example.com" />
-            </label>
-            <label>
-              <span class="muted">Password</span>
-              <input class="input" id="auth-pass" type="password" required minlength="6" placeholder="Min. 6 karakter" />
-            </label>
-            <label style="display:flex;align-items:center;gap:.4rem">
-              <input id="auth-mode" type="checkbox" />
-              <span class="muted" style="font-size:.9rem">
-                Yeni hesap oluştur (işaretli değilse sadece giriş yapar)
-              </span>
-            </label>
-            <button class="btn" type="submit">Devam</button>
-            <p id="auth-msg" class="muted" style="min-height:1.2em"></p>
-          </form>
-
-          <!-- Durum kutusu -->
-          <div class="card">
-            <h3 style="margin-top:0">Hesap durumu</h3>
-            <p id="auth-user" class="muted">Şu anda giriş yapmış kimse yok.</p>
-            <button id="logoutBtn" class="btn secondary" type="button" style="display:none;margin-top:.5rem">
-              Çıkış yap
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- CONTACT -->
     <section id="contact" class="section">
@@ -668,7 +654,7 @@
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form).entries());
       if(!data.email.includes('@')){ msg.textContent = 'Please enter a valid email.'; return; }
-      msg.textContent = 'Thanks! We\'ll get back to you within 24 hours.';
+      msg.textContent = 'Thanks! We\\'ll get back to you within 24 hours.';
       form.reset();
     });
 
@@ -973,13 +959,13 @@
       const days = parseInt(document.getElementById('days').value||'3',10);
       const dest = document.getElementById('dest').value || 'Cappadocia';
       const items = Array.from(document.querySelectorAll('#planOut .card')).map((el,i)=>{
-        const text = el.innerText.replace(/\n/g,' ');
+        const text = el.innerText.replace(/\\n/g,' ');
         return {summary:`${titleBase} — Day ${i+1} • ${dest}`, description:text};
       });
       function dt(n){ const d=new Date(startStr); d.setDate(d.getDate()+n); return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z'; }
-      let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\nPRODID:-//TripMate//EN\n';
+      let ics = 'BEGIN:VCALENDAR\\nVERSION:2.0\\nCALSCALE:GREGORIAN\\nPRODID:-//TripMate//EN\\n';
       items.slice(0,days).forEach((it,i)=>{
-        ics+=`BEGIN:VEVENT\nUID:${Date.now()}-${i}@tripmate\nDTSTAMP:${dt(0)}\nDTSTART:${dt(i)}\nDTEND:${dt(i)}\nSUMMARY:${it.summary}\nDESCRIPTION:${it.description}\nEND:VEVENT\n`;
+        ics+=`BEGIN:VEVENT\\nUID:${Date.now()}-${i}@tripmate\\nDTSTAMP:${dt(0)}\\nDTSTART:${dt(i)}\\nDTEND:${dt(i)}\\nSUMMARY:${it.summary}\\nDESCRIPTION:${it.description}\\nEND:VEVENT\\n`;
       });
       ics+='END:VCALENDAR';
       const blob=new Blob([ics],{type:'text/calendar'});
