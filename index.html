@@ -60,8 +60,116 @@
     .modal header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);padding-bottom:8px;margin-bottom:12px}
     .close{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--text);padding:6px 10px;border-radius:999px;cursor:pointer}
     footer{border-top:1px solid rgba(255,255,255,.08);padding:36px 0;color:#e0d3c3}
-    @media (max-width: 980px){ .hero-grid{grid-template-columns:1fr} .grid-3{grid-template-columns:1fr 1fr} .gallery{grid-template-columns:repeat(3,1fr)} nav ul{display:none} .mobile-toggle{display:inline-flex} .grid-2{grid-template-columns:1fr} }
-    @media (max-width: 560px){ .grid-3{grid-template-columns:1fr} .gallery{grid-template-columns:repeat(2,1fr)} }
+
+    /* --- NEW: Companions section styles --- */
+    #companions {
+      padding: 56px 0;
+    }
+    #companions h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    .section-subtitle {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 2.5rem;
+      font-size: 0.95rem;
+      opacity: 0.8;
+      color: var(--muted);
+    }
+    .companion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.8rem;
+      margin-top: 1rem;
+    }
+    .companion-card {
+      background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(0,0,0,0.25));
+      border-radius: 16px;
+      padding: 1.8rem 1.6rem;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.45);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+    .companion-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.6);
+      border-color: rgba(200,178,124,0.8);
+    }
+    .companion-card h3 {
+      margin-top: 0.6rem;
+      margin-bottom: 0.4rem;
+      font-size: 1.3rem;
+    }
+    .companion-card p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 0.9rem;
+      color: var(--muted);
+    }
+    .companion-icon {
+      font-size: 1.8rem;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(168,124,82,0.15);
+    }
+    .companion-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .companion-list li {
+      position: relative;
+      padding-left: 1.3rem;
+      margin-bottom: 0.4rem;
+    }
+    .companion-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--brand-2);
+      font-weight: 700;
+    }
+    .companion-btn {
+      width: 100%;
+      font-size: 0.95rem;
+      justify-content: center;
+      text-align: center;
+    }
+    .companion-card--guide .companion-icon {
+      background: rgba(59,130,246,0.18);
+    }
+    .companion-card--friend .companion-icon {
+      background: rgba(16,185,129,0.18);
+    }
+    .companions-note {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      text-align: center;
+      opacity: 0.75;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:1fr 1fr}
+      .gallery{grid-template-columns:repeat(3,1fr)}
+      nav ul{display:none}
+      .mobile-toggle{display:inline-flex}
+      .grid-2{grid-template-columns:1fr}
+    }
+    @media (max-width: 560px){
+      .grid-3{grid-template-columns:1fr}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+    }
   </style>
 </head>
 <body>
@@ -78,6 +186,8 @@
           <li><a id="mFeatures" href="#features">Features</a></li>
           <li><a id="mPlan" href="#plan">Plan Trip</a></li>
           <li><a id="mGuides" href="#guides">Local Guides</a></li>
+          <!-- NEW MENU ITEM -->
+          <li><a id="mCompanions" href="#companions">How to explore?</a></li>
           <li><a id="mLive" href="#live">Safety</a></li>
           <li><a id="mReviews" href="#reviews">Reviews</a></li>
           <li><a id="mPricing" href="#pricing">Pricing</a></li>
@@ -90,6 +200,8 @@
         <li><a href="#features">Features</a></li>
         <li><a href="#plan">Plan Trip</a></li>
         <li><a href="#guides">Local Guides</a></li>
+        <!-- NEW MOBILE MENU ITEM -->
+        <li><a href="#companions">How to explore?</a></li>
         <li><a href="#live">Safety</a></li>
         <li><a href="#reviews">Reviews</a></li>
         <li><a href="#pricing">Pricing</a></li>
@@ -110,7 +222,7 @@
             <input class="input" type="date" aria-label="Start date" id="heroStart" />
             <button class="btn" id="cta">Start planning</button>
           </div>
-          <p class="muted" style="margin-top:.5rem">Free 7‑day trial • No credit card needed</p>
+          <p class="muted" style="margin-top:.5rem">Free 7-day trial • No credit card needed</p>
         </div>
         <div class="hero-card" aria-label="App preview">
           <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1400&auto=format&fit=crop" alt="Sunset over mountains with a map on phone" style="width:100%;height:280px;object-fit:cover;border-radius:14px;border:1px solid rgba(255,255,255,.08)" />
@@ -134,11 +246,11 @@
 
     <section id="features" class="section">
       <div class="container">
-        <h2 style="margin:0 0 10px">Everything you need for stress‑free travel</h2>
+        <h2 style="margin:0 0 10px">Everything you need for stress-free travel</h2>
         <p class="muted" style="margin:0 0 20px">From the first spark to your last selfie — TripMate keeps it simple.</p>
         <div class="grid-3">
           <div class="card"><h3>Discover</h3><p class="muted">Guides, trending spots, and seasonal picks tailored to your vibe.</p></div>
-          <div class="card"><h3>Itineraries</h3><p class="muted">Drag‑and‑drop plans with opening hours & travel time.</p></div>
+          <div class="card"><h3>Itineraries</h3><p class="muted">Drag-and-drop plans with opening hours & travel time.</p></div>
           <div class="card"><h3>Bookings</h3><p class="muted">Flights, stays, and activities in one checkout.</p></div>
           <div class="card"><h3>Collaboration</h3><p class="muted">Invite friends, vote on dates, split expenses.</p></div>
           <div class="card"><h3>Offline mode</h3><p class="muted">Access tickets and maps offline.</p></div>
@@ -207,6 +319,62 @@
       </div>
     </section>
 
+    <!-- NEW SECTION: HOW TO EXPLORE / COMPANIONS -->
+    <section id="companions" class="section">
+      <div class="container">
+        <h2>Nasıl Gezmek İstersin?</h2>
+        <p class="section-subtitle">
+          İstersen lisanslı bir rehberle detaylı tur yap, istersen rehber olmayan, şehirde yaşayan bir yol arkadaşıyla
+          daha arkadaşça ve rahat bir gün geçir.
+        </p>
+
+        <div class="companion-grid">
+          <!-- Profesyonel rehber kartı -->
+          <article class="companion-card companion-card--guide">
+            <div class="companion-icon">🎓</div>
+            <h3>Gerçek (Lisanslı) Rehberler</h3>
+            <p>
+              Bölgeyi çok iyi bilen, resmi lisanslı rehberler eşliğinde müzeleri, tarihi noktaları ve gizli kalmış
+              yerleri derinlemesine keşfet.
+            </p>
+            <ul class="companion-list">
+              <li>Resmî lisanslı, denetlenmiş rehber profilleri</li>
+              <li>Tarih ve kültür ağırlıklı planlı turlar</li>
+              <li>Belirli rota, saat ve program</li>
+              <li>Özel veya küçük grup seçenekleri</li>
+            </ul>
+            <button class="btn companion-btn">
+              Profesyonel rehberle gezmek istiyorum
+            </button>
+          </article>
+
+          <!-- Arkadaşça yol arkadaşı kartı -->
+          <article class="companion-card companion-card--friend">
+            <div class="companion-icon">🤝</div>
+            <h3>Arkadaşça Yol Arkadaşı</h3>
+            <p>
+              Şehirde yaşayan, rehber olmayan ama seni gezdirmek isteyen kişilerle sokak sokak dolaş, kafelere otur,
+              yerel hayatı daha samimi bir şekilde deneyimle.
+            </p>
+            <ul class="companion-list">
+              <li>Rehber olmayan, arkadaş ortamında gezi deneyimi</li>
+              <li>Kafeler, sokaklar, yerel mahalleler</li>
+              <li>Daha esnek, sohbet odaklı rota</li>
+              <li>Yeni insanlar tanıma ve pratik yapma fırsatı</li>
+            </ul>
+            <button class="btn secondary companion-btn">
+              Arkadaşça gezmek istiyorum
+            </button>
+          </article>
+        </div>
+
+        <p class="companions-note">
+          Not: TripMate’de ileride hem rehberlerin hem de yol arkadaşlarının profillerini, yorumlarını ve güvenlik
+          puanlarını görerek seçim yapabileceksin. Şimdilik bu bölüm konsepti tanıtmak içindir.
+        </p>
+      </div>
+    </section>
+
     <!-- LIVE SAFETY -->
     <section id="live" class="section">
       <div class="container">
@@ -220,7 +388,7 @@
             </div>
           </div>
           <div class="card">
-            <h3 style="margin:0 0 8px">Follow‑me Map</h3>
+            <h3 style="margin:0 0 8px">Follow-me Map</h3>
             <div id="liveMap"></div>
             <small class="muted">Demo: your location updates in real time if permission is granted.</small>
           </div>
@@ -563,14 +731,49 @@
 
     // ---- LANGUAGE TOGGLE (EN/TR basic) ----
     const i18n = {
-      en:{menu:{features:'Features',plan:'Plan Trip',guides:'Local Guides',live:'Safety',reviews:'Reviews',pricing:'Pricing',contact:'Contact'},
-          hero:{lead:'TripMate helps you build smart itineraries, find trusted local guides, and share your live location with loved ones.',cta:'Start planning'}},
-      tr:{menu:{features:'Özellikler',plan:'Seyahat Planı',guides:'Yerel Rehberler',live:'Güvenlik',reviews:'Yorumlar',pricing:'Fiyatlandırma',contact:'İletişim'},
-          hero:{lead:'TripMate; akıllı planlar yapmanıza, güvenilir yerel rehberler bulmanıza ve canlı konumunuzu sevdiklerinizle paylaşmanıza yardım eder.',cta:'Planlamaya başla'}}
+      en:{
+        menu:{
+          features:'Features',
+          plan:'Plan Trip',
+          guides:'Local Guides',
+          companions:'How to explore?',
+          live:'Safety',
+          reviews:'Reviews',
+          pricing:'Pricing',
+          contact:'Contact'
+        },
+        hero:{
+          lead:'TripMate helps you build smart itineraries, find trusted local guides, and share your live location with loved ones.',
+          cta:'Start planning'
+        }
+      },
+      tr:{
+        menu:{
+          features:'Özellikler',
+          plan:'Seyahat Planı',
+          guides:'Yerel Rehberler',
+          companions:'Nasıl Gezmek İstersin?',
+          live:'Güvenlik',
+          reviews:'Yorumlar',
+          pricing:'Fiyatlandırma',
+          contact:'İletişim'
+        },
+        hero:{
+          lead:'TripMate; akıllı planlar yapmanıza, güvenilir yerel rehberler bulmanıza ve canlı konumunuzu sevdiklerinizle paylaşmanıza yardım eder.',
+          cta:'Planlamaya başla'
+        }
+      }
     };
     function setLang(L){
       const t=i18n[L]; document.documentElement.lang=L;
-      mFeatures.textContent=t.menu.features; mPlan.textContent=t.menu.plan; mGuides.textContent=t.menu.guides; mLive.textContent=t.menu.live; mReviews.textContent=t.menu.reviews; mPricing.textContent=t.menu.pricing; mContact.textContent=t.menu.contact;
+      mFeatures.textContent=t.menu.features;
+      mPlan.textContent=t.menu.plan;
+      mGuides.textContent=t.menu.guides;
+      mCompanions.textContent=t.menu.companions;
+      mLive.textContent=t.menu.live;
+      mReviews.textContent=t.menu.reviews;
+      mPricing.textContent=t.menu.pricing;
+      mContact.textContent=t.menu.contact;
       document.getElementById('heroLead').textContent=t.hero.lead;
       document.getElementById('cta').textContent=t.hero.cta;
       document.getElementById('heroDest').setAttribute('placeholder', L==='en'?'Where to? e.g., Rome, Kyoto, Cappadocia':'Nereye? Örn. Roma, Kyoto, Kapadokya');
