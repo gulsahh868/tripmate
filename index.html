@@ -158,6 +158,29 @@
       color: var(--muted);
     }
 
+    /* NEW: people list under buttons */
+    .companion-people {
+      margin-top: 1.2rem;
+      display: grid;
+      gap: 0.8rem;
+    }
+    .companion-person {
+      background: rgba(0,0,0,0.28);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      padding: 1rem 1.1rem;
+    }
+    .companion-person-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.3rem;
+    }
+    .companion-person-header .tag {
+      font-size: 0.7rem;
+      padding: .2rem .5rem;
+    }
+
     @media (max-width: 980px){
       .hero-grid{grid-template-columns:1fr}
       .grid-3{grid-template-columns:1fr 1fr}
@@ -343,7 +366,7 @@
               <li>Belirli rota, saat ve program</li>
               <li>Özel veya küçük grup seçenekleri</li>
             </ul>
-            <button class="btn companion-btn">
+            <button class="btn companion-btn" id="btnProGuides">
               Profesyonel rehberle gezmek istiyorum
             </button>
           </article>
@@ -362,11 +385,15 @@
               <li>Daha esnek, sohbet odaklı rota</li>
               <li>Yeni insanlar tanıma ve pratik yapma fırsatı</li>
             </ul>
-            <button class="btn secondary companion-btn">
+            <button class="btn secondary companion-btn" id="btnFriendComp">
               Arkadaşça gezmek istiyorum
             </button>
           </article>
         </div>
+
+        <!-- Kişi listelerinin çıkacağı alanlar -->
+        <div id="proGuidesList" class="companion-people" hidden></div>
+        <div id="friendCompList" class="companion-people" hidden></div>
 
         <p class="companions-note">
           Not: TripMate’de ileride hem rehberlerin hem de yol arkadaşlarının profillerini, yorumlarını ve güvenlik
@@ -535,6 +562,104 @@
       {who:'Zeynep', text:'Our guide was super helpful and the route flowed well.', stars:5},
       {who:'Mert', text:'Safety sharing made me feel relaxed.', stars:4}
     ];
+
+    // ---- COMPANION PEOPLE (demo data) ----
+    const proGuidePeople = [
+      {
+        name: 'Ayşe K.',
+        city: 'Kapadokya',
+        badge: 'Licensed guide',
+        langs: 'TR, EN',
+        about: 'Kapadokya’da tarih ve fotoğraf odaklı, küçük grup turları düzenliyor.'
+      },
+      {
+        name: 'Mehmet B.',
+        city: 'İstanbul',
+        badge: 'Museum & history',
+        langs: 'TR, EN',
+        about: 'Tarihi yarımada, müzeler ve gizli sokaklar üzerine yürüyüş turları.'
+      },
+      {
+        name: 'Elif D.',
+        city: 'İzmir / Ege',
+        badge: 'Food & wine',
+        langs: 'TR, EN, DE',
+        about: 'Ege bölgesinde yerel lezzetler ve butik köy rotaları hazırlıyor.'
+      }
+    ];
+
+    const friendCompanions = [
+      {
+        name: 'Can',
+        city: 'İstanbul',
+        badge: 'Local buddy',
+        langs: 'TR, EN',
+        about: 'Kafeler, sahil yürüyüşleri ve gece hayatı için arkadaşça eşlik ediyor.'
+      },
+      {
+        name: 'Sara',
+        city: 'Kapadokya',
+        badge: 'Photo buddy',
+        langs: 'EN',
+        about: 'Balon kalkış noktaları ve manzara spotlarını bilen, fotoğraf çekmeyi seven yol arkadaşı.'
+      },
+      {
+        name: 'Burcu',
+        city: 'İzmir',
+        badge: 'Cafe hopper',
+        langs: 'TR',
+        about: 'Kordon, Karşıyaka ve ara sokak kafelerinde chill geziler yapmayı seviyor.'
+      }
+    ];
+
+    function renderCompanions(targetId, data, titleText) {
+      const wrap = document.getElementById(targetId);
+      if (!wrap) return;
+      wrap.hidden = false;
+      wrap.innerHTML = '';
+
+      if (titleText) {
+        const label = document.createElement('div');
+        label.className = 'muted';
+        label.style.fontSize = '.9rem';
+        label.style.marginBottom = '.3rem';
+        label.textContent = titleText;
+        wrap.appendChild(label);
+      }
+
+      data.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'companion-person';
+
+        card.innerHTML = `
+          <div class="companion-person-header">
+            <strong>${p.name}</strong>
+            <span class="tag">${p.badge}</span>
+          </div>
+          <div class="muted">${p.city} • ${p.langs}</div>
+          <p class="muted" style="margin:.4rem 0 0;">${p.about}</p>
+        `;
+
+        wrap.appendChild(card);
+      });
+
+      wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    const btnProGuides = document.getElementById('btnProGuides');
+    const btnFriendComp = document.getElementById('btnFriendComp');
+
+    btnProGuides?.addEventListener('click', () => {
+      renderCompanions('proGuidesList', proGuidePeople, 'Profesyonel rehberlerden bazı örnek profiller:');
+      const friendList = document.getElementById('friendCompList');
+      if (friendList) friendList.hidden = true;
+    });
+
+    btnFriendComp?.addEventListener('click', () => {
+      renderCompanions('friendCompList', friendCompanions, 'Arkadaşça yol arkadaşlarından bazı örnek profiller:');
+      const proList = document.getElementById('proGuidesList');
+      if (proList) proList.hidden = true;
+    });
 
     // ---- PLAN BUILDER + MAP ----
     let planMap, planLayer;
