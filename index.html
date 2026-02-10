@@ -195,26 +195,6 @@
       .gallery{grid-template-columns:repeat(2,1fr)}
     }
   </style>
-
-  <!-- 🔥 Firebase SDK BURADA -->
-  <script type="module">
-    // ⚠️ Buradaki değerleri Firebase konsolundan aldığın kodla DEĞİŞTİR
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
-
-    const firebaseConfig = {
-      apiKey: "SENIN_API_KEYIN",
-      authDomain: "SENIN_PROJE_ADIN.firebaseapp.com",
-      projectId: "SENIN_PROJE_IDN",
-      storageBucket: "SENIN_PROJE_ADIN.appspot.com",
-      messagingSenderId: "SENDER_ID",
-      appId: "APP_ID",
-      measurementId: "MEASUREMENT_ID"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
  <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
