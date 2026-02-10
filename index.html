@@ -611,6 +611,72 @@
         </div>
       </div>
     </section>
+<!-- GUIDE APPLICATION -->
+<section id="guide-apply" class="section">
+  <div class="container">
+    <h2 style="margin:0 0 10px">Rehber olmak istiyorum</h2>
+    <p class="muted" style="margin:0 0 14px">
+      Eğer bölgeni iyi biliyorsan ve TripMate üzerinde rehber olarak görünmek istiyorsan, aşağıdaki formu doldur.
+      Başvurun onaylandıktan sonra rehber listesinde görüneceksin.
+    </p>
+
+    <div class="grid-2">
+      <form id="guide-apply-form" class="card" style="display:grid;gap:.7rem">
+        <label>
+          <span class="muted">Ad Soyad</span>
+          <input class="input" name="fullName" required placeholder="Örn. Ayşe Kaya">
+        </label>
+
+        <label>
+          <span class="muted">Şehir / Bölge</span>
+          <input class="input" name="city" required placeholder="Örn. Kapadokya, İstanbul">
+        </label>
+
+        <label>
+          <span class="muted">Konuştuğun diller</span>
+          <input class="input" name="langs" required placeholder="Örn. TR, EN, DE">
+        </label>
+
+        <label>
+          <span class="muted">Günlük Ücret (₺)</span>
+          <input class="input" type="number" name="pricePerDay" required placeholder="1500">
+        </label>
+
+        <label style="display:flex;align-items:center;gap:.5rem">
+          <input type="checkbox" name="isLicensed">
+          <span class="muted">Resmî / lisanslı rehberim</span>
+        </label>
+
+        <label>
+          <span class="muted">Kendini anlat</span>
+          <textarea class="input" name="about" rows="4" required placeholder="Kısaca kendini anlat."></textarea>
+        </label>
+
+        <label>
+          <span class="muted">Instagram</span>
+          <input class="input" name="instagram" placeholder="@kullanici">
+        </label>
+
+        <label>
+          <span class="muted">WhatsApp</span>
+          <input class="input" name="whatsapp" placeholder="+90...">
+        </label>
+
+        <button class="btn" type="submit">Başvurumu gönder</button>
+        <p id="guide-apply-msg" class="muted" style="min-height:1.2rem"></p>
+      </form>
+
+      <div class="card" style="display:grid;gap:.5rem">
+        <h3>Başvuru nasıl işliyor?</h3>
+        <ul class="muted" style="padding-left:1.1rem;line-height:1.8">
+          <li>İlk önce giriş yapmış olman gerekiyor.</li>
+          <li>Formu gönderince başvurun "pending" durumuna düşer.</li>
+          <li>Onaylanınca rehberler listesinde görünürsün.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
     <!-- COMPANIONS -->
     <section id="companions" class="section">
