@@ -5,51 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="TripMate — plan trips, find local guides, live safety tracking, and more." />
   <title>TripMate • Travel Smarter</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <!-- Leaflet for maps -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
   <style>
-    :root{
-      --bg:#1a150f; --card:#221b14; --muted:#bda793; --text:#f3eee8;
-      --brand:#a87c52; --brand-2:#c8b27c; --danger:#c9573b;
-      --radius:18px; --shadow:0 20px 60px rgba(0,0,0,.35);
-    }
+    :root{ --bg:#1a150f; --card:#221b14; --muted:#bda793; --text:#f3eee8; --brand:#a87c52; --brand-2:#c8b27c; --danger:#c9573b; --radius:18px; --shadow:0 20px 60px rgba(0,0,0,.35); }
     *{box-sizing:border-box}
     html,body{margin:0}
-    body{
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
-      background:
-        radial-gradient(1200px 600px at 10% -10%, #3a2c20, transparent 50%),
-        radial-gradient(800px 500px at 110% 10%, #251d14, transparent 40%),
-        var(--bg);
-      color:var(--text);
-      line-height:1.6;
-    }
+    body{font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; background: radial-gradient(1200px 600px at 10% -10%, #3a2c20, transparent 50%), radial-gradient(800px 500px at 110% 10%, #251d14, transparent 40%), var(--bg); color:var(--text); line-height:1.6}
     a{color:inherit;text-decoration:none}
     .container{max-width:1200px;margin:0 auto;padding:0 20px}
-    .btn{
-      display:inline-flex;align-items:center;gap:.6rem;
-      padding:.85rem 1.1rem;border-radius:14px;
-      background:linear-gradient(135deg,var(--brand),#b8926b);
-      color:white;font-weight:600;border:0;cursor:pointer;
-      transition: transform .08s ease, box-shadow .2s ease;
-      box-shadow:0 10px 30px rgba(168,124,82,.35);
-    }
+    .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.1rem;border-radius:14px;background:linear-gradient(135deg,var(--brand),#b8926b);color:white;font-weight:600;border:0;cursor:pointer;transition: transform .08s ease, box-shadow .2s ease; box-shadow:0 10px 30px rgba(168,124,82,.35)}
     .btn:hover{transform:translateY(-1px)}
     .btn.secondary{background:rgba(255,255,255,.06);box-shadow:none;color:#f0e7db}
     .tag{font-size:.75rem;color:var(--brand-2);border:1px solid rgba(200,178,124,.35);padding:.25rem .5rem;border-radius:999px}
-    header{
-      position:sticky;top:0;z-index:50;
-      background:rgba(26,21,15,.6);
-      backdrop-filter:saturate(160%) blur(10px);
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
+    header{position:sticky;top:0;z-index:50;background:rgba(26,21,15,.6);backdrop-filter:saturate(160%) blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
     .logo{display:flex;align-items:center;gap:.6rem;font-weight:800;letter-spacing:.3px}
     .logo-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2));display:grid;place-items:center;color:#1a1209;font-weight:800}
@@ -61,19 +35,9 @@
     .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
     .hero h1{font-size:clamp(2rem,3.8vw,3.4rem);line-height:1.1;margin:.25rem 0 .75rem}
     .lead{color:#e9dfd2;max-width:56ch}
-    .hero-card{
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
     .input-row{display:flex;gap:.5rem;flex-wrap:wrap}
-    .input{
-      flex:1;min-width:220px;background:#1f180f;
-      border:1px solid rgba(255,255,255,.12);
-      color:#f3eee8;border-radius:12px;padding:.85rem 1rem;
-    }
+    .input{flex:1;min-width:220px;background:#1f180f;border:1px solid rgba(255,255,255,.12);color:#f3eee8;border-radius:12px;padding:.85rem 1rem}
     .section{padding:56px 0}
     .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -96,7 +60,7 @@
     .close{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--text);padding:6px 10px;border-radius:999px;cursor:pointer}
     footer{border-top:1px solid rgba(255,255,255,.08);padding:36px 0;color:#e0d3c3}
 
-    /* Companions section */
+    /* --- Companions section styles --- */
     #companions { padding: 56px 0; }
     #companions h2 { text-align: center; font-size: 2rem; margin-bottom: 0.75rem; }
     .section-subtitle { text-align: center; max-width: 640px; margin: 0 auto 2.5rem; font-size: 0.95rem; opacity: 0.8; color: var(--muted); }
@@ -118,6 +82,24 @@
     .companion-person-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem; }
     .companion-person-header .tag { font-size: 0.7rem; padding: .2rem .5rem; }
 
+    /* PROFILE SECTION EXTRA */
+    #profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background:#3a2c20;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2rem;
+      overflow:hidden;
+    }
+    #profile-avatar img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
     @media (max-width: 980px){
       .hero-grid{grid-template-columns:1fr}
       .grid-3{grid-template-columns:1fr 1fr}
@@ -132,7 +114,7 @@
     }
   </style>
 
-  <!-- FIREBASE + AUTH + FIRESTORE -->
+  <!-- FIREBASE + AUTH + PROFILE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
     import {
@@ -144,13 +126,20 @@
       sendEmailVerification,
       sendPasswordResetEmail
     } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
     import {
       getFirestore,
       doc,
+      getDoc,
       setDoc,
-      getDoc
+      serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+    import {
+      getStorage,
+      ref,
+      uploadBytes,
+      getDownloadURL
+    } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-storage.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCjgmWgVm7YCZs3Lr9EWYJ5XyACwn6geYc",
@@ -166,10 +155,12 @@
     const analytics = getAnalytics(app);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
     console.log("✅ Firebase bağlı, app adı:", app.name);
 
     window.addEventListener("DOMContentLoaded", () => {
+      // --- AUTH ELEMENTLERİ ---
       const form = document.getElementById("auth-form");
       const emailInput = document.getElementById("auth-email");
       const passInput = document.getElementById("auth-pass");
@@ -179,98 +170,191 @@
       const logoutBtn = document.getElementById("logoutBtn");
       const forgotBtn = document.getElementById("forgotBtn");
 
-      if (!form) return;
+      // --- PROFIL ELEMENTLERİ ---
+      const profileForm = document.getElementById("profile-form");
+      const profileMsg = document.getElementById("profile-msg");
+      const profileName = document.getElementById("profile-name");
+      const profileCity = document.getElementById("profile-city");
+      const profileRole = document.getElementById("profile-role");
+      const profileBio = document.getElementById("profile-bio");
+      const profileLangs = document.getElementById("profile-langs");
+      const profileRate = document.getElementById("profile-rate");
+      const profilePhoto = document.getElementById("profile-photo");
+      const avatarBox = document.getElementById("profile-avatar");
+      const previewName = document.getElementById("preview-name");
+      const previewRole = document.getElementById("preview-role");
+      const previewCity = document.getElementById("preview-city");
 
-      // Kayıt / Giriş
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        msgEl.textContent = "İşleniyor...";
+      // küçük preview canlı güncelleme (sadece görünüş için)
+      function updatePreview() {
+        if (previewName) previewName.textContent = profileName.value || "-";
+        if (previewRole) {
+          const v = profileRole.value;
+          previewRole.textContent =
+            v === "guide" ? "Rehber" :
+            v === "companion" ? "Arkadaşça yol arkadaşı" :
+            v === "traveler" ? "Gezgin" :
+            "Rol seçilmedi";
+        }
+        if (previewCity) previewCity.textContent = profileCity.value || "";
+      }
+      if (profileName) profileName.addEventListener("input", updatePreview);
+      if (profileCity) profileCity.addEventListener("input", updatePreview);
+      if (profileRole) profileRole.addEventListener("change", updatePreview);
 
-        const email = emailInput.value.trim();
-        const password = passInput.value;
+      // ---------------- AUTH FORM ----------------
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          msgEl.textContent = "İşleniyor...";
 
+          const email = emailInput.value.trim();
+          const password = passInput.value;
+
+          try {
+            if (modeInput.checked) {
+              // KAYIT
+              const cred = await createUserWithEmailAndPassword(auth, email, password);
+              try {
+                await sendEmailVerification(cred.user);
+                msgEl.textContent = "🎉 Hesap oluşturuldu. Lütfen e-postanı kontrol edip doğrula.";
+              } catch (mailErr) {
+                console.error(mailErr);
+                msgEl.textContent = "Hesap oluşturuldu ama doğrulama maili gönderilirken hata oldu.";
+              }
+            } else {
+              // GİRİŞ
+              await signInWithEmailAndPassword(auth, email, password);
+              msgEl.textContent = "✅ Giriş başarılı.";
+            }
+          } catch (err) {
+            console.error(err);
+            msgEl.textContent = "⚠️ " + (err.message || "Bir hata oluştu.");
+          }
+        });
+      }
+
+      // ŞİFREMİ UNUTTUM
+      if (forgotBtn) {
+        forgotBtn.addEventListener("click", async () => {
+          const email = emailInput.value.trim();
+          if (!email) {
+            msgEl.textContent = "Şifre sıfırlamak için önce e-posta yaz.";
+            return;
+          }
+          msgEl.textContent = "Şifre sıfırlama maili gönderiliyor...";
+          try {
+            await sendPasswordResetEmail(auth, email);
+            msgEl.textContent = "📧 Şifre sıfırlama linki e-postana gönderildi.";
+          } catch (err) {
+            console.error(err);
+            msgEl.textContent = "Şifre sıfırlama sırasında hata: " + (err.message || "");
+          }
+        });
+      }
+
+      // ÇIKIŞ
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+          try {
+            await signOut(auth);
+          } catch (err) {
+            console.error(err);
+            msgEl.textContent = "Çıkış yapılırken hata oluştu.";
+          }
+        });
+      }
+
+      // --- PROFİLİ FIRESTORE'DAN ÇEK ---
+      async function loadProfile(user) {
+        if (!profileForm || !user) return;
+        profileMsg.textContent = "Profil yükleniyor...";
         try {
-          if (modeInput.checked) {
-            // YENİ HESAP
-            const cred = await createUserWithEmailAndPassword(auth, email, password);
+          const refDoc = doc(db, "users", user.uid);
+          const snap = await getDoc(refDoc);
+          if (snap.exists()) {
+            const data = snap.data();
+            profileName.value = data.fullName || "";
+            profileCity.value = data.city || "";
+            profileRole.value = data.role || "";
+            profileBio.value = data.bio || "";
+            profileLangs.value = data.languages || "";
+            profileRate.value = data.dailyRate || "";
+            updatePreview();
 
-            // Firestore'a temel profil kaydı
-            try {
-              await setDoc(doc(db, "users", cred.user.uid), {
-                email,
-                role: "traveler",      // şimdilik varsayılan
-                createdAt: Date.now()
-              }, { merge: true });
-            } catch (profileErr) {
-              console.error("Profil kaydedilirken hata:", profileErr);
+            // avatar
+            if (data.photoURL && avatarBox) {
+              avatarBox.innerHTML = `<img src="${data.photoURL}" alt="Profil fotoğrafı">`;
             }
-
-            // Doğrulama maili
-            try {
-              await sendEmailVerification(cred.user);
-              msgEl.textContent = "🎉 Hesap oluşturuldu. Lütfen e-postanı kontrol edip doğrula.";
-            } catch (mailErr) {
-              console.error(mailErr);
-              msgEl.textContent = "Hesap oluşturuldu ama doğrulama maili gönderilirken hata oldu.";
-            }
+            profileMsg.textContent = "Profil yüklendi. Güncelleyebilir ve tekrar kaydedebilirsin.";
           } else {
-            // GİRİŞ
-            await signInWithEmailAndPassword(auth, email, password);
-            msgEl.textContent = "✅ Giriş başarılı.";
+            profileMsg.textContent = "İlk kez dolduruyorsun, bilgilerini kaydedebilirsin.";
+            updatePreview();
           }
         } catch (err) {
           console.error(err);
-          msgEl.textContent = "⚠️ " + (err.message || "Bir hata oluştu.");
+          profileMsg.textContent = "Profil yüklenirken hata oluştu.";
         }
-      });
+      }
 
-      // Şifremi unuttum
-      forgotBtn?.addEventListener("click", async () => {
-        const email = emailInput.value.trim();
-        if (!email) {
-          msgEl.textContent = "Şifre sıfırlamak için önce e-posta yaz.";
-          return;
-        }
-        msgEl.textContent = "Şifre sıfırlama maili gönderiliyor...";
-        try {
-          await sendPasswordResetEmail(auth, email);
-          msgEl.textContent = "📧 Şifre sıfırlama linki e-postana gönderildi.";
-        } catch (err) {
-          console.error(err);
-          msgEl.textContent = "Şifre sıfırlama sırasında hata: " + (err.message || "");
-        }
-      });
+      // --- PROFİL FORMU KAYDET ---
+      if (profileForm) {
+        profileForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const user = auth.currentUser;
+          if (!user) {
+            profileMsg.textContent = "Profil kaydetmek için önce giriş yap.";
+            return;
+          }
 
-      // Çıkış
-      logoutBtn?.addEventListener("click", async () => {
-        try {
-          await signOut(auth);
-        } catch (err) {
-          console.error(err);
-          msgEl.textContent = "Çıkış yapılırken hata oluştu.";
-        }
-      });
+          profileMsg.textContent = "Profil kaydediliyor...";
+
+          let photoURL = null;
+
+          try {
+            // Fotoğraf seçilmişse Storage'a yükle
+            if (profilePhoto.files && profilePhoto.files[0]) {
+              const file = profilePhoto.files[0];
+              const storageRef = ref(storage, `profilePhotos/${user.uid}`);
+              await uploadBytes(storageRef, file);
+              photoURL = await getDownloadURL(storageRef);
+            }
+
+            const refDoc = doc(db, "users", user.uid);
+            await setDoc(refDoc, {
+              fullName: profileName.value.trim(),
+              city: profileCity.value.trim(),
+              role: profileRole.value,
+              bio: profileBio.value.trim(),
+              languages: profileLangs.value.trim(),
+              dailyRate: profileRate.value.trim(),
+              photoURL: photoURL || undefined, // varsa güncelle
+              updatedAt: serverTimestamp()
+            }, { merge: true });
+
+            if (photoURL && avatarBox) {
+              avatarBox.innerHTML = `<img src="${photoURL}" alt="Profil fotoğrafı">`;
+            }
+
+            profileMsg.textContent = "✅ Profil kaydedildi.";
+          } catch (err) {
+            console.error(err);
+            profileMsg.textContent = "Profil kaydedilirken hata: " + (err.message || "");
+          }
+        });
+      }
 
       // Kullanıcı durumu
-      onAuthStateChanged(auth, async (user) => {
+      onAuthStateChanged(auth, (user) => {
         if (user) {
-          let extra = "";
-          try {
-            const snap = await getDoc(doc(db, "users", user.uid));
-            if (snap.exists()) {
-              const data = snap.data();
-              if (data.role) extra = ` • rol: ${data.role}`;
-            }
-          } catch (e) {
-            console.warn("Profil okunamadı:", e);
-          }
-
           const verifiedText = user.emailVerified ? " (doğrulanmış)" : " (doğrulanmamış)";
-          userEl.textContent = "Giriş yapan: " + (user.email || "Bilinmeyen kullanıcı") + verifiedText + extra;
+          if (userEl) userEl.textContent = "Giriş yapan: " + (user.email || "Bilinmeyen kullanıcı") + verifiedText;
           if (logoutBtn) logoutBtn.style.display = "inline-flex";
+          loadProfile(user);
         } else {
-          userEl.textContent = "Şu anda giriş yapmış kimse yok.";
+          if (userEl) userEl.textContent = "Şu anda giriş yapmış kimse yok.";
           if (logoutBtn) logoutBtn.style.display = "none";
+          if (profileMsg) profileMsg.textContent = "Profil için önce giriş yap.";
         }
       });
     });
@@ -318,9 +402,7 @@
         <div>
           <span class="tag">NEW • Safety tracking + guides</span>
           <h1>Plan, book, and share unforgettable trips — all in one place.</h1>
-          <p class="lead" id="heroLead">
-            TripMate helps you build smart itineraries, find trusted local guides, and share your live location with loved ones.
-          </p>
+          <p class="lead" id="heroLead">TripMate helps you build smart itineraries, find trusted local guides, and share your live location with loved ones.</p>
           <div class="input-row" style="margin:.9rem 0 0">
             <input class="input" type="text" placeholder="Where to? e.g., Rome, Kyoto, Cappadocia" aria-label="Destination" id="heroDest" />
             <input class="input" type="date" aria-label="Start date" id="heroStart" />
@@ -329,25 +411,11 @@
           <p class="muted" style="margin-top:.5rem">Free 7-day trial • No credit card needed</p>
         </div>
         <div class="hero-card" aria-label="App preview">
-          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1400&auto=format&fit=crop"
-               alt="Sunset over mountains with a map on phone"
-               style="width:100%;height:280px;object-fit:cover;border-radius:14px;border:1px solid rgba(255,255,255,.08)" />
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1400&auto=format&fit=crop" alt="Sunset over mountains with a map on phone" style="width:100%;height:280px;object-fit:cover;border-radius:14px;border:1px solid rgba(255,255,255,.08)" />
           <div class="grid-3" style="margin-top:14px">
-            <div class="card" style="padding:14px">
-              <div class="icon">🗺️</div>
-              <div style="font-weight:700">Daily plans</div>
-              <div class="muted">Optimized schedules with maps.</div>
-            </div>
-            <div class="card" style="padding:14px">
-              <div class="icon">🧭</div>
-              <div style="font-weight:700">Local guides</div>
-              <div class="muted">Filter by language, price, rating.</div>
-            </div>
-            <div class="card" style="padding:14px">
-              <div class="icon">🛰️</div>
-              <div style="font-weight:700">Live safety</div>
-              <div class="muted">Share live location + SOS.</div>
-            </div>
+            <div class="card" style="padding:14px"><div class="icon">🗺️</div><div style="font-weight:700">Daily plans</div><div class="muted">Optimized schedules with maps.</div></div>
+            <div class="card" style="padding:14px"><div class="icon">🧭</div><div style="font-weight:700">Local guides</div><div class="muted">Filter by language, price, rating.</div></div>
+            <div class="card" style="padding:14px"><div class="icon">🛰️</div><div style="font-weight:700">Live safety</div><div class="muted">Share live location + SOS.</div></div>
           </div>
         </div>
       </div>
@@ -388,8 +456,72 @@
               Çıkış yap
             </button>
             <p class="muted" style="font-size:.85rem;margin-top:.5rem">
-              Demo aşamasında e-posta + şifre ile giriş / kayıt ve doğrulama &amp; şifre sıfırlama e-postaları aktiftir.
+              Demo aşamasında e-posta + şifre ile giriş / kayıt ve doğrulama & şifre sıfırlama e-postaları aktiftir.
               Sonraki adımda Google, Apple gibi girişler eklenebilir.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFILE SECTION -->
+    <section id="profile" class="section">
+      <div class="container">
+        <h2 style="margin:0 0 10px">Profilim</h2>
+        <p class="muted" style="margin:0 0 14px">
+          Giriş yaptıktan sonra profilini doldurup kaydedebilirsin. Rehber / yol arkadaşı / gezgin rolünü buradan seç.
+        </p>
+        <div class="grid-2">
+          <form id="profile-form" class="card" style="display:grid;gap:.7rem">
+            <label>
+              <span class="muted">Ad Soyad</span>
+              <input id="profile-name" class="input" type="text" placeholder="Örn. Elif Yılmaz">
+            </label>
+            <label>
+              <span class="muted">Şehir</span>
+              <input id="profile-city" class="input" type="text" placeholder="Örn. İstanbul, Kapadokya">
+            </label>
+            <label>
+              <span class="muted">Rolün</span>
+              <select id="profile-role" class="input">
+                <option value="">Seç...</option>
+                <option value="guide">Rehber</option>
+                <option value="companion">Arkadaşça yol arkadaşı</option>
+                <option value="traveler">Gezgin</option>
+              </select>
+            </label>
+            <label>
+              <span class="muted">Konuştuğun diller</span>
+              <input id="profile-langs" class="input" type="text" placeholder="Örn. Türkçe, İngilizce, Almanca">
+            </label>
+            <label>
+              <span class="muted">Günlük ücret (opsiyonel, özellikle rehberler için)</span>
+              <input id="profile-rate" class="input" type="number" min="0" placeholder="Örn. 1500">
+            </label>
+            <label>
+              <span class="muted">Kendini anlat</span>
+              <textarea id="profile-bio" class="input" rows="4" placeholder="Seyahat stilin, neler sunduğun, hangi bölgeleri iyi bildiğin..."></textarea>
+            </label>
+            <label>
+              <span class="muted">Profil fotoğrafı (opsiyonel)</span>
+              <input id="profile-photo" class="input" type="file" accept="image/*">
+            </label>
+            <button class="btn" type="submit">Profili kaydet</button>
+            <p id="profile-msg" class="muted" style="min-height:1.2rem"></p>
+          </form>
+
+          <div class="card" style="display:grid;gap:.8rem">
+            <h3>Profil önizlemesi</h3>
+            <div style="display:flex;align-items:center;gap:12px">
+              <div id="profile-avatar">🙂</div>
+              <div>
+                <div id="preview-name"><strong>-</strong></div>
+                <div id="preview-role" class="muted" style="font-size:.9rem">Rol seçilmedi</div>
+                <div id="preview-city" class="muted" style="font-size:.9rem"></div>
+              </div>
+            </div>
+            <p class="muted" style="font-size:.85rem;margin-top:.5rem">
+              Bu bilgiler ileride rehber / yol arkadaşı listelerinde ve mesajlaşma ekranlarında kullanılacak.
             </p>
           </div>
         </div>
@@ -405,14 +537,13 @@
       </div>
     </section>
 
-    <!-- FEATURES -->
     <section id="features" class="section">
       <div class="container">
         <h2 style="margin:0 0 10px">Everything you need for stress-free travel</h2>
         <p class="muted" style="margin:0 0 20px">From the first spark to your last selfie — TripMate keeps it simple.</p>
         <div class="grid-3">
           <div class="card"><h3>Discover</h3><p class="muted">Guides, trending spots, and seasonal picks tailored to your vibe.</p></div>
-          <div class="card"><h3>Itineraries</h3><p class="muted">Drag-and-drop plans with opening hours &amp; travel time.</p></div>
+          <div class="card"><h3>Itineraries</h3><p class="muted">Drag-and-drop plans with opening hours & travel time.</p></div>
           <div class="card"><h3>Bookings</h3><p class="muted">Flights, stays, and activities in one checkout.</p></div>
           <div class="card"><h3>Collaboration</h3><p class="muted">Invite friends, vote on dates, split expenses.</p></div>
           <div class="card"><h3>Offline mode</h3><p class="muted">Access tickets and maps offline.</p></div>
@@ -435,8 +566,8 @@
                 <select class="input" id="interest">
                   <option value="mix">Mixed</option>
                   <option value="food">Food</option>
-                  <option value="museum">Museums &amp; Culture</option>
-                  <option value="nature">Nature &amp; Hiking</option>
+                  <option value="museum">Museums & Culture</option>
+                  <option value="nature">Nature & Hiking</option>
                 </select>
               </label>
             </div>
@@ -541,13 +672,11 @@
     <!-- LIVE SAFETY -->
     <section id="live" class="section">
       <div class="container">
-        <h2 style="margin:0 0 10px">Live Tracking &amp; Safety</h2>
+        <h2 style="margin:0 0 10px">Live Tracking & Safety</h2>
         <div class="grid-2">
           <div class="card">
             <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <label class="tag" style="display:inline-flex;align-items:center;gap:6px">
-                <input type="checkbox" id="shareChk"> Share my location with trusted contacts
-              </label>
+              <label class="tag" style="display:inline-flex;align-items:center;gap:6px"><input type="checkbox" id="shareChk"> Share my location with trusted contacts</label>
               <a class="btn secondary" href="tel:112" title="Emergency"><strong>112</strong> Call</a>
               <a class="btn secondary" href="sms:+900000000000?body=EMERGENCY:%20I%20shared%20my%20location.">Emergency SMS</a>
             </div>
@@ -564,7 +693,7 @@
     <!-- REVIEWS -->
     <section id="reviews" class="section">
       <div class="container">
-        <h2 style="margin:0 0 10px">Reviews &amp; Ratings</h2>
+        <h2 style="margin:0 0 10px">Reviews & Ratings</h2>
         <div id="reviewsWrap" class="grid-3"></div>
       </div>
     </section>
@@ -590,30 +719,9 @@
         <h2 style="margin:0 0 8px">Simple, fair pricing</h2>
         <p class="muted" style="margin:0 0 20px">Try every feature free for 7 days — cancel anytime.</p>
         <div class="grid-3">
-          <div class="card">
-            <div class="muted">Starter</div>
-            <div style="font-size:2.1rem;font-weight:800">Free</div>
-            <ul class="muted" style="padding-left:1rem;line-height:2">
-              <li>1 active trip</li><li>Basic itinerary builder</li><li>Community guides</li>
-            </ul>
-            <button class="btn secondary">Get started</button>
-          </div>
-          <div class="card" style="outline:2px solid var(--brand);box-shadow:0 0 0 6px rgba(168,124,82,.15)">
-            <div class="muted">Pro</div>
-            <div style="font-size:2.1rem;font-weight:800">$6<span style="font-size:1rem;font-weight:600">/mo</span></div>
-            <ul class="muted" style="padding-left:1rem;line-height:2">
-              <li>Unlimited trips</li><li>AI optimizations</li><li>Shared budgets</li><li>Offline access</li>
-            </ul>
-            <button class="btn">Start free trial</button>
-          </div>
-          <div class="card">
-            <div class="muted">Teams</div>
-            <div style="font-size:2.1rem;font-weight:800">$12<span style="font-size:1rem;font-weight:600">/user</span></div>
-            <ul class="muted" style="padding-left:1rem;line-height:2">
-              <li>Workspace &amp; roles</li><li>Approvals</li><li>Priority support</li>
-            </ul>
-            <button class="btn secondary">Talk to sales</button>
-          </div>
+          <div class="card"><div class="muted">Starter</div><div style="font-size:2.1rem;font-weight:800">Free</div><ul class="muted" style="padding-left:1rem;line-height:2"><li>1 active trip</li><li>Basic itinerary builder</li><li>Community guides</li></ul><button class="btn secondary">Get started</button></div>
+          <div class="card" style="outline:2px solid var(--brand);box-shadow:0 0 0 6px rgba(168,124,82,.15)"><div class="muted">Pro</div><div style="font-size:2.1rem;font-weight:800">$6<span style="font-size:1rem;font-weight:600">/mo</span></div><ul class="muted" style="padding-left:1rem;line-height:2"><li>Unlimited trips</li><li>AI optimizations</li><li>Shared budgets</li><li>Offline access</li></ul><button class="btn">Start free trial</button></div>
+          <div class="card"><div class="muted">Teams</div><div style="font-size:2.1rem;font-weight:800">$12<span style="font-size:1rem;font-weight:600">/user</span></div><ul class="muted" style="padding-left:1rem;line-height:2"><li>Workspace & roles</li><li>Approvals</li><li>Priority support</li></ul><button class="btn secondary">Talk to sales</button></div>
         </div>
       </div>
     </section>
@@ -672,30 +780,30 @@
     // Mobile menu toggle
     const toggle = document.querySelector('.mobile-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
-    if (toggle) {
+    if(toggle){
       toggle.addEventListener('click', () => {
         const open = mobileMenu.hasAttribute('hidden') === false;
-        if (open) { mobileMenu.setAttribute('hidden', ''); toggle.setAttribute('aria-expanded', 'false'); }
-        else { mobileMenu.removeAttribute('hidden'); toggle.setAttribute('aria-expanded', 'true'); }
+        if(open){ mobileMenu.setAttribute('hidden',''); toggle.setAttribute('aria-expanded','false'); }
+        else { mobileMenu.removeAttribute('hidden'); toggle.setAttribute('aria-expanded','true'); }
       });
     }
 
     // CTA
-    document.getElementById('cta')?.addEventListener('click', () => {
-      document.getElementById('plan').scrollIntoView({ behavior: 'smooth' });
-      const d = document.getElementById('heroDest').value; if (d) document.getElementById('dest').value = d;
-      const s = document.getElementById('heroStart').value; if (s) document.getElementById('startDate').value = s;
+    document.getElementById('cta')?.addEventListener('click',()=>{
+      document.getElementById('plan').scrollIntoView({behavior:'smooth'});
+      const d=document.getElementById('heroDest').value; if(d) document.getElementById('dest').value=d;
+      const s=document.getElementById('heroStart').value; if(s) document.getElementById('startDate').value=s;
     });
 
     // Contact form demo
-    const form = document.getElementById('contact-form');
-    const msg = document.getElementById('form-msg');
-    form?.addEventListener('submit', (e) => {
+    const formContact = document.getElementById('contact-form');
+    const msgContact = document.getElementById('form-msg');
+    formContact?.addEventListener('submit', (e)=>{
       e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
-      if (!data.email.includes('@')) { msg.textContent = 'Please enter a valid email.'; return; }
-      msg.textContent = 'Thanks! We\'ll get back to you within 24 hours.';
-      form.reset();
+      const data = Object.fromEntries(new FormData(formContact).entries());
+      if(!data.email.includes('@')){ msgContact.textContent = 'Please enter a valid email.'; return; }
+      msgContact.textContent = 'Thanks! We\'ll get back to you within 24 hours.';
+      formContact.reset();
     });
 
     // Year
@@ -703,9 +811,9 @@
 
     // ---- DATA (mock) ----
     const mockPOI = [
-      { name:'Göreme Open-Air Museum', type:'museum', lat:38.643, lng:34.833 },
-      { name:'Love Valley', type:'nature', lat:38.673, lng:34.827 },
-      { name:'Seten Restaurant', type:'food', lat:38.640, lng:34.827 }
+      {name:'Göreme Open-Air Museum', type:'museum', lat:38.643, lng:34.833},
+      {name:'Love Valley', type:'nature', lat:38.673, lng:34.827},
+      {name:'Seten Restaurant', type:'food', lat:38.640, lng:34.827}
     ];
     const guides = [
       {name:'John K.', city:'Nevşehir', langs:['EN','TR'], price:1200, rating:4.8, img:'https://images.unsplash.com/photo-1603344797033-f0f4f587ab60?q=80&w=200&auto=format&fit=crop'},
@@ -722,16 +830,53 @@
       {who:'Mert', text:'Safety sharing made me feel relaxed.', stars:4}
     ];
 
-    // Companions demo data
+    // ---- COMPANION PEOPLE (demo data) ----
     const proGuidePeople = [
-      { name:'Ayşe K.', city:'Kapadokya', badge:'Licensed guide', langs:'TR, EN', about:'Kapadokya’da tarih ve fotoğraf odaklı, küçük grup turları düzenliyor.' },
-      { name:'Mehmet B.', city:'İstanbul', badge:'Museum & history', langs:'TR, EN', about:'Tarihi yarımada, müzeler ve gizli sokaklar üzerine yürüyüş turları.' },
-      { name:'Elif D.', city:'İzmir / Ege', badge:'Food & wine', langs:'TR, EN, DE', about:'Ege bölgesinde yerel lezzetler ve butik köy rotaları hazırlıyor.' }
+      {
+        name: 'Ayşe K.',
+        city: 'Kapadokya',
+        badge: 'Licensed guide',
+        langs: 'TR, EN',
+        about: 'Kapadokya’da tarih ve fotoğraf odaklı, küçük grup turları düzenliyor.'
+      },
+      {
+        name: 'Mehmet B.',
+        city: 'İstanbul',
+        badge: 'Museum & history',
+        langs: 'TR, EN',
+        about: 'Tarihi yarımada, müzeler ve gizli sokaklar üzerine yürüyüş turları.'
+      },
+      {
+        name: 'Elif D.',
+        city: 'İzmir / Ege',
+        badge: 'Food & wine',
+        langs: 'TR, EN, DE',
+        about: 'Ege bölgesinde yerel lezzetler ve butik köy rotaları hazırlıyor.'
+      }
     ];
+
     const friendCompanions = [
-      { name:'Can', city:'İstanbul', badge:'Local buddy', langs:'TR, EN', about:'Kafeler, sahil yürüyüşleri ve gece hayatı için arkadaşça eşlik ediyor.' },
-      { name:'Sara', city:'Kapadokya', badge:'Photo buddy', langs:'EN', about:'Balon kalkış noktaları ve manzara spotlarını bilen, fotoğraf çekmeyi seven yol arkadaşı.' },
-      { name:'Burcu', city:'İzmir', badge:'Cafe hopper', langs:'TR', about:'Kordon, Karşıyaka ve ara sokak kafelerinde chill geziler yapmayı seviyor.' }
+      {
+        name: 'Can',
+        city: 'İstanbul',
+        badge: 'Local buddy',
+        langs: 'TR, EN',
+        about: 'Kafeler, sahil yürüyüşleri ve gece hayatı için arkadaşça eşlik ediyor.'
+      },
+      {
+        name: 'Sara',
+        city: 'Kapadokya',
+        badge: 'Photo buddy',
+        langs: 'EN',
+        about: 'Balon kalkış noktaları ve manzara spotlarını bilen, fotoğraf çekmeyi seven yol arkadaşı.'
+      },
+      {
+        name: 'Burcu',
+        city: 'İzmir',
+        badge: 'Cafe hopper',
+        langs: 'TR',
+        about: 'Kordon, Karşıyaka ve ara sokak kafelerinde chill geziler yapmayı seviyor.'
+      }
     ];
 
     function renderCompanions(targetId, data, titleText) {
@@ -752,6 +897,7 @@
       data.forEach(p => {
         const card = document.createElement('div');
         card.className = 'companion-person';
+
         card.innerHTML = `
           <div class="companion-person-header">
             <strong>${p.name}</strong>
@@ -760,6 +906,7 @@
           <div class="muted">${p.city} • ${p.langs}</div>
           <p class="muted" style="margin:.4rem 0 0;">${p.about}</p>
         `;
+
         wrap.appendChild(card);
       });
 
@@ -781,142 +928,111 @@
       if (proList) proList.hidden = true;
     });
 
-    // PLAN BUILDER + MAP
+    // ---- PLAN BUILDER + MAP ----
     let planMap, planLayer;
-    function ensurePlanMap() {
-      if (!planMap) {
-        planMap = L.map('planMap').setView([38.643, 34.833], 11);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          attribution: '© OSM'
-        }).addTo(planMap);
+    function ensurePlanMap(){
+      if(!planMap){
+        planMap = L.map('planMap').setView([38.643,34.833], 11);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:18, attribution:'© OSM'}).addTo(planMap);
         planLayer = L.layerGroup().addTo(planMap);
       }
     }
-    function buildPlan() {
+    function buildPlan(){
       const dest = document.getElementById('dest').value || 'Cappadocia';
       const interest = document.getElementById('interest').value;
       const out = document.getElementById('planOut');
-      const days = parseInt(document.getElementById('days').value || '3', 10);
+      const days = parseInt(document.getElementById('days').value||'3',10);
       out.innerHTML = '';
-      for (let d = 1; d <= days; d++) {
+      for(let d=1; d<=days; d++){
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className='card';
         card.innerHTML = `<strong>Day ${d} • ${dest}</strong><br><span class='muted'>Places & activities (${interest})</span>`;
         out.appendChild(card);
       }
       ensurePlanMap();
       planLayer.clearLayers();
-      mockPOI.forEach(pt => L.marker([pt.lat, pt.lng]).addTo(planLayer).bindPopup(pt.name));
-      planMap.fitBounds(L.latLngBounds(mockPOI.map(pt => [pt.lat, pt.lng])), { padding:[20,20] });
+      mockPOI.forEach(pt=> L.marker([pt.lat, pt.lng]).addTo(planLayer).bindPopup(pt.name));
+      planMap.fitBounds(L.latLngBounds(mockPOI.map(pt=>[pt.lat,pt.lng])), {padding:[20,20]});
       const poisWrap = document.getElementById('pois');
-      poisWrap.innerHTML = '';
-      mockPOI.forEach(x => {
-        const c = document.createElement('div'); c.className = 'card';
-        c.innerHTML = `<strong>${x.name}</strong> <span class='muted'>(${x.type})</span>`;
-        poisWrap.appendChild(c);
+      poisWrap.innerHTML='';
+      mockPOI.forEach(x=>{
+        const c=document.createElement('div'); c.className='card';
+        c.innerHTML=`<strong>${x.name}</strong> <span class='muted'>(${x.type})</span>`; poisWrap.appendChild(c);
       });
     }
     document.getElementById('buildPlan').addEventListener('click', buildPlan);
 
-    // GUIDES FILTER
-    function renderGuides() {
-      const city = (document.getElementById('city').value || '').toLowerCase();
+    // ---- GUIDES FILTER ----
+    function renderGuides(){
+      const city = (document.getElementById('city').value||'').toLowerCase();
       const lang = document.getElementById('lang').value;
-      const maxP = parseInt(document.getElementById('maxPrice').value || '999999', 10);
+      const maxP = parseInt(document.getElementById('maxPrice').value||'999999',10);
       const list = document.getElementById('guideList');
       list.innerHTML = '';
-      guides
-        .filter(g => (!city || g.city.toLowerCase().includes(city)) && g.langs.includes(lang) && g.price <= maxP)
-        .forEach(g => {
-          const row = document.createElement('div');
-          row.className = 'guide';
+      guides.filter(g=>(!city||g.city.toLowerCase().includes(city)) && g.langs.includes(lang) && g.price<=maxP)
+        .forEach(g=>{
+          const row=document.createElement('div');
+          row.className='guide';
           row.setAttribute('data-name', g.name);
-          row.innerHTML = `<img src="${g.img}" alt="${g.name}">
-            <div><strong>${g.name}</strong><div class='muted'>${g.city} • ${g.langs.join(', ')} • ₺${g.price}</div></div>
-            <div>⭐ ${g.rating}</div>`;
+          row.innerHTML=`<img src="${g.img}" alt="${g.name}"><div><strong>${g.name}</strong><div class='muted'>${g.city} • ${g.langs.join(', ')} • ₺${g.price}</div></div><div>⭐ ${g.rating}</div>`;
           list.appendChild(row);
         });
     }
-    ['city','lang','maxPrice'].forEach(id => document.getElementById(id).addEventListener('input', renderGuides));
+    ['city','lang','maxPrice'].forEach(id=>document.getElementById(id).addEventListener('input',renderGuides));
     renderGuides();
 
-    // FEATURED GUIDES
+    // ---- FEATURED GUIDES ----
     const featuredWrap = document.getElementById('featuredGuides');
-    function renderFeatured() {
-      featuredWrap.innerHTML = '';
-      guides.slice(0,3).forEach(g => {
-        const c = document.createElement('div');
-        c.className = 'mini-card';
+    function renderFeatured(){
+      featuredWrap.innerHTML='';
+      guides.slice(0,3).forEach(g=>{
+        const c=document.createElement('div');
+        c.className='mini-card';
         c.setAttribute('data-name', g.name);
-        c.innerHTML = `<img src="${g.img}" alt="${g.name}">
-          <div><strong>${g.name}</strong><div class='muted'>${g.city} • ${g.langs.join(', ')} • ₺${g.price}</div></div>
-          <div>⭐ ${g.rating}</div>`;
-        c.addEventListener('click', () => openGuidePlan(g.name));
+        c.innerHTML=`<img src="${g.img}" alt="${g.name}"><div><strong>${g.name}</strong><div class='muted'>${g.city} • ${g.langs.join(', ')} • ₺${g.price}</div></div><div>⭐ ${g.rating}</div>`;
+        c.addEventListener('click', ()=>openGuidePlan(g.name));
         featuredWrap.appendChild(c);
       });
     }
     renderFeatured();
 
-    // SUGGESTIONS
+    // ---- SUGGESTIONS ----
     const sWrap = document.getElementById('suggestList');
-    suggestions.forEach(s => {
-      const c = document.createElement('div');
-      c.className = 'card';
-      c.innerHTML = `<strong>${s.title}</strong> <span class='tag'>${s.tag}</span><br>
-        <span class='muted'>${s.desc}</span><div style='margin-top:6px'><strong>${s.price}</strong></div>`;
-      sWrap.appendChild(c);
-    });
+    suggestions.forEach(s=>{ const c=document.createElement('div'); c.className='card'; c.innerHTML=`<strong>${s.title}</strong> <span class='tag'>${s.tag}</span><br><span class='muted'>${s.desc}</span><div style='margin-top:6px'><strong>${s.price}</strong></div>`; sWrap.appendChild(c); });
 
-    // REVIEWS
+    // ---- REVIEWS ----
     const rWrap = document.getElementById('reviewsWrap');
-    reviewData.forEach(x => {
-      const c = document.createElement('div');
-      c.className = 'card';
-      c.innerHTML = `<strong>${x.who}</strong> – ${'⭐'.repeat(x.stars)}<br><span class='muted'>${x.text}</span>`;
-      rWrap.appendChild(c);
-    });
+    reviewData.forEach(x=>{ const c=document.createElement('div'); c.className='card'; c.innerHTML=`<strong>${x.who}</strong> – ${'⭐'.repeat(x.stars)}<br><span class='muted'>${x.text}</span>`; rWrap.appendChild(c); });
 
-    // LIVE MAP (geolocation)
+    // ---- LIVE MAP (geolocation) ----
     let liveMap, liveMarker, accCircle, watchId;
-    function initLive() {
-      if (!liveMap) {
-        liveMap = L.map('liveMap').setView([38.7, 34.85], 12);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:18, attribution:'© OSM' }).addTo(liveMap);
+    function initLive(){
+      if(!liveMap){
+        liveMap = L.map('liveMap').setView([38.7,34.85], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:18, attribution:'© OSM'}).addTo(liveMap);
       }
-      if (navigator.geolocation) {
-        if (watchId) navigator.geolocation.clearWatch(watchId);
-        watchId = navigator.geolocation.watchPosition(pos => {
-          const { latitude:lat, longitude:lng, accuracy } = pos.coords;
-          if (!liveMarker) {
-            liveMarker = L.marker([lat,lng]).addTo(liveMap).bindPopup('Me');
-          }
+      if(navigator.geolocation){
+        if(watchId) navigator.geolocation.clearWatch(watchId);
+        watchId = navigator.geolocation.watchPosition(pos=>{
+          const {latitude:lat, longitude:lng, accuracy} = pos.coords;
+          if(!liveMarker){ liveMarker = L.marker([lat,lng]).addTo(liveMap).bindPopup('Me'); }
           liveMarker.setLatLng([lat,lng]);
-          if (!accCircle) {
-            accCircle = L.circle([lat,lng], { radius:accuracy }).addTo(liveMap);
-          }
-          accCircle.setLatLng([lat,lng]);
-          accCircle.setRadius(accuracy);
+          if(!accCircle){ accCircle = L.circle([lat,lng], {radius:accuracy}).addTo(liveMap); }
+          accCircle.setLatLng([lat,lng]); accCircle.setRadius(accuracy);
           liveMap.setView([lat,lng]);
-        }, err => {
-          alert('Location error: ' + err.message);
-        }, { enableHighAccuracy:true, maximumAge:5000 });
-      } else {
-        alert('Your browser does not support geolocation.');
-      }
+        }, err=>{ alert('Location error: '+err.message); }, {enableHighAccuracy:true, maximumAge:5000});
+      } else { alert('Your browser does not support geolocation.'); }
     }
     const liveSection = document.getElementById('live');
-    const liveObserver = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) initLive();
-    }, { threshold:.2 });
+    const liveObserver = new IntersectionObserver((entries)=>{ if(entries[0].isIntersecting) initLive(); }, {threshold:.2});
     liveObserver.observe(liveSection);
 
     // Share toggle (demo)
-    document.getElementById('shareChk').addEventListener('change', (e) => {
+    document.getElementById('shareChk').addEventListener('change', (e)=>{
       alert(e.target.checked ? 'Location sharing enabled (demo)' : 'Location sharing disabled (demo)');
     });
 
-    // GUIDE PLANS
+    // ---- GUIDE PLANS (click card -> modal) ----
     const guidePlans = {
       'John K.': [
         {day:1, items:['Sunrise balloon viewpoint','Göreme Open-Air Museum','Avanos pottery workshop']},
@@ -938,129 +1054,131 @@
     const title = document.getElementById('guidePlanTitle');
     let currentGuide = null;
 
-    function openGuidePlan(name) {
+    function openGuidePlan(name){
       currentGuide = name;
       title.textContent = `${name} — Suggested Itinerary`;
       const plan = guidePlans[name] || [{day:1, items:['Custom day plan will be arranged after booking.']}];
       body.innerHTML = '';
-      plan.forEach(d => {
+      plan.forEach(d=>{
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `<strong>Day ${d.day}</strong><ul style="margin:.4rem 0 0 1rem">
-          ${d.items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+        card.innerHTML = `<strong>Day ${d.day}</strong><ul style="margin:.4rem 0 0 1rem">${d.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
         body.appendChild(card);
       });
       modal.classList.add('open');
       modal.setAttribute('aria-hidden','false');
     }
 
-    document.getElementById('closeGuidePlan').addEventListener('click', () => {
+    document.getElementById('closeGuidePlan').addEventListener('click', ()=>{
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden','true');
     });
-    modal.addEventListener('click', (e) => {
-      if (e.target.id === 'guidePlanModal') {
-        document.getElementById('closeGuidePlan').click();
-      }
-    });
+    modal.addEventListener('click', (e)=>{ if(e.target.id==='guidePlanModal'){ document.getElementById('closeGuidePlan').click(); }});
 
-    document.getElementById('guideList').addEventListener('click', (e) => {
+    // delegate clicks from lists
+    document.getElementById('guideList').addEventListener('click', (e)=>{
       const card = e.target.closest('.guide');
-      if (!card) return;
+      if(!card) return;
       const name = card.getAttribute('data-name') || card.querySelector('strong')?.textContent?.trim();
-      if (name) openGuidePlan(name);
+      if(name) openGuidePlan(name);
     });
 
-    document.getElementById('useThisPlan').addEventListener('click', () => {
-      if (!currentGuide) return;
+    // Use plan -> fill Plan Trip section
+    document.getElementById('useThisPlan').addEventListener('click', ()=>{
+      if(!currentGuide) return;
       const plan = guidePlans[currentGuide];
       const out = document.getElementById('planOut');
       out.innerHTML = '';
-      plan.forEach(d => {
+      plan.forEach(d=>{
         const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<strong>Day ${d.day} • ${currentGuide}</strong><ul style='margin:.4rem 0 0 1rem'>
-          ${d.items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+        card.className='card';
+        card.innerHTML = `<strong>Day ${d.day} • ${currentGuide}</strong><ul style='margin:.4rem 0 0 1rem'>${d.items.map(i=>`<li>${i}</li>`).join('')}</ul>`;
         out.appendChild(card);
       });
-      document.getElementById('plan').scrollIntoView({ behavior:'smooth' });
+      document.getElementById('plan').scrollIntoView({behavior:'smooth'});
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden','true');
     });
 
     // ICS DOWNLOAD
-    function buildICS() {
+    function buildICS(){
       const titleBase = 'TripMate Itinerary';
       const startStr = document.getElementById('startDate').value || new Date().toISOString().slice(0,10);
-      const days = parseInt(document.getElementById('days').value || '3', 10);
+      const days = parseInt(document.getElementById('days').value||'3',10);
       const dest = document.getElementById('dest').value || 'Cappadocia';
-      const items = Array.from(document.querySelectorAll('#planOut .card')).map((el, i) => {
+      const items = Array.from(document.querySelectorAll('#planOut .card')).map((el,i)=>{
         const text = el.innerText.replace(/\n/g,' ');
-        return { summary:`${titleBase} — Day ${i+1} • ${dest}`, description:text };
+        return {summary:`${titleBase} — Day ${i+1} • ${dest}`, description:text};
       });
-      function dt(n) {
-        const d = new Date(startStr);
-        d.setDate(d.getDate() + n);
-        return d.toISOString().replace(/[-:]/g,'').split('.')[0] + 'Z';
-      }
+      function dt(n){ const d=new Date(startStr); d.setDate(d.getDate()+n); return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z'; }
       let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\nPRODID:-//TripMate//EN\n';
-      items.slice(0, days).forEach((it, i) => {
-        ics += `BEGIN:VEVENT\nUID:${Date.now()}-${i}@tripmate\nDTSTAMP:${dt(0)}\nDTSTART:${dt(i)}\nDTEND:${dt(i)}\nSUMMARY:${it.summary}\nDESCRIPTION:${it.description}\nEND:VEVENT\n`;
+      items.slice(0,days).forEach((it,i)=>{
+        ics+=`BEGIN:VEVENT\nUID:${Date.now()}-${i}@tripmate\nDTSTAMP:${dt(0)}\nDTSTART:${dt(i)}\nDTEND:${dt(i)}\nSUMMARY:${it.summary}\nDESCRIPTION:${it.description}\nEND:VEVENT\n`;
       });
-      ics += 'END:VCALENDAR';
-      const blob = new Blob([ics], { type:'text/calendar' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'tripmate-itinerary.ics';
-      a.click();
-      URL.revokeObjectURL(a.href);
+      ics+='END:VCALENDAR';
+      const blob=new Blob([ics],{type:'text/calendar'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='tripmate-itinerary.ics'; a.click(); URL.revokeObjectURL(a.href);
     }
     document.getElementById('downloadICS').addEventListener('click', buildICS);
 
-    // LANGUAGE TOGGLE
+    // ---- LANGUAGE TOGGLE (EN/TR basic) ----
     const i18n = {
       en:{
-        menu:{ features:'Features', plan:'Plan Trip', guides:'Local Guides', companions:'How to explore?', live:'Safety', reviews:'Reviews', pricing:'Pricing', contact:'Contact' },
+        menu:{
+          features:'Features',
+          plan:'Plan Trip',
+          guides:'Local Guides',
+          companions:'How to explore?',
+          live:'Safety',
+          reviews:'Reviews',
+          pricing:'Pricing',
+          contact:'Contact'
+        },
         hero:{
           lead:'TripMate helps you build smart itineraries, find trusted local guides, and share your live location with loved ones.',
           cta:'Start planning'
         }
       },
       tr:{
-        menu:{ features:'Özellikler', plan:'Seyahat Planı', guides:'Yerel Rehberler', companions:'Nasıl Gezmek İstersin?', live:'Güvenlik', reviews:'Yorumlar', pricing:'Fiyatlandırma', contact:'İletişim' },
+        menu:{
+          features:'Özellikler',
+          plan:'Seyahat Planı',
+          guides:'Yerel Rehberler',
+          companions:'Nasıl Gezmek İstersin?',
+          live:'Güvenlik',
+          reviews:'Yorumlar',
+          pricing:'Fiyatlandırma',
+          contact:'İletişim'
+        },
         hero:{
           lead:'TripMate; akıllı planlar yapmanıza, güvenilir yerel rehberler bulmanıza ve canlı konumunuzu sevdiklerinizle paylaşmanıza yardım eder.',
           cta:'Planlamaya başla'
         }
       }
     };
-    function setLang(L) {
-      const t = i18n[L]; document.documentElement.lang = L;
-      mFeatures.textContent = t.menu.features;
-      mPlan.textContent = t.menu.plan;
-      mGuides.textContent = t.menu.guides;
-      mCompanions.textContent = t.menu.companions;
-      mLive.textContent = t.menu.live;
-      mReviews.textContent = t.menu.reviews;
-      mPricing.textContent = t.menu.pricing;
-      mContact.textContent = t.menu.contact;
-      document.getElementById('heroLead').textContent = t.hero.lead;
-      document.getElementById('cta').textContent = t.hero.cta;
-      document.getElementById('heroDest').setAttribute(
-        'placeholder',
-        L === 'en' ? 'Where to? e.g., Rome, Kyoto, Cappadocia' : 'Nereye? Örn. Roma, Kyoto, Kapadokya'
-      );
+    function setLang(L){
+      const t=i18n[L]; document.documentElement.lang=L;
+      mFeatures.textContent=t.menu.features;
+      mPlan.textContent=t.menu.plan;
+      mGuides.textContent=t.menu.guides;
+      mCompanions.textContent=t.menu.companions;
+      mLive.textContent=t.menu.live;
+      mReviews.textContent=t.menu.reviews;
+      mPricing.textContent=t.menu.pricing;
+      mContact.textContent=t.menu.contact;
+      document.getElementById('heroLead').textContent=t.hero.lead;
+      document.getElementById('cta').textContent=t.hero.cta;
+      document.getElementById('heroDest').setAttribute('placeholder', L==='en'?'Where to? e.g., Rome, Kyoto, Cappadocia':'Nereye? Örn. Roma, Kyoto, Kapadokya');
     }
-    document.getElementById('langEN').onclick = () => setLang('en');
-    document.getElementById('langTR').onclick = () => setLang('tr');
+    document.getElementById('langEN').onclick=()=>setLang('en');
+    document.getElementById('langTR').onclick=()=>setLang('tr');
     setLang('en');
 
-    // Featured section click
-    document.getElementById('featuredGuides').addEventListener('click', (e) => {
+    document.getElementById('featuredGuides').addEventListener('click', (e)=>{
       const card = e.target.closest('.mini-card');
-      if (!card) return;
+      if(!card) return;
       const name = card.getAttribute('data-name');
-      if (name) openGuidePlan(name);
+      if(name) openGuidePlan(name);
     });
   </script>
 </body>
