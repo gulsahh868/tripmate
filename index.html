@@ -203,7 +203,9 @@
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
       signOut,
-      onAuthStateChanged
+      onAuthStateChanged,
+      sendPasswordResetEmail,
+      sendEmailVerification
     } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
 
@@ -231,9 +233,11 @@
       const msgEl = document.getElementById("auth-msg");
       const userEl = document.getElementById("auth-user");
       const logoutBtn = document.getElementById("logoutBtn");
+      const resetBtn = document.getElementById("resetPassBtn");
 
       if (!form) return;
 
+      // Giriş / Kayıt
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
         msgEl.textContent = "İşleniyor...";
@@ -243,9 +247,18 @@
 
         try {
           if (modeInput.checked) {
-            await createUserWithEmailAndPassword(auth, email, password);
-            msgEl.textContent = "🎉 Hesap oluşturuldu ve giriş yapıldı.";
+            // ✅ Yeni hesap + doğrulama maili
+            const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+            try {
+              await sendEmailVerification(cred.user);
+              msgEl.textContent = "🎉 Hesap oluşturuldu. Lütfen e-postanı kontrol edip doğrula.";
+            } catch (mailErr) {
+              console.error(mailErr);
+              msgEl.textContent = "Hesap oluştu ama doğrulama maili gönderilirken bir hata oldu.";
+            }
           } else {
+            // ✅ Giriş
             await signInWithEmailAndPassword(auth, email, password);
             msgEl.textContent = "✅ Giriş başarılı.";
           }
@@ -255,6 +268,25 @@
         }
       });
 
+      // 🔁 Şifremi unuttum
+      resetBtn?.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+        if (!email) {
+          msgEl.textContent = "Şifre sıfırlamak için önce e-posta alanını doldur.";
+          return;
+        }
+        msgEl.textContent = "İşleniyor...";
+
+        try {
+          await sendPasswordResetEmail(auth, email);
+          msgEl.textContent = "📨 Şifre sıfırlama bağlantısı e-postana gönderildi.";
+        } catch (err) {
+          console.error(err);
+          msgEl.textContent = "⚠️ Şifre sıfırlama maili gönderilemedi: " + (err.message || "");
+        }
+      });
+
+      // Çıkış
       logoutBtn?.addEventListener("click", async () => {
         try {
           await signOut(auth);
@@ -264,9 +296,14 @@
         }
       });
 
+      // Kullanıcı durumu
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          userEl.textContent = "Giriş yapan: " + (user.email || "Bilinmeyen kullanıcı");
+          let info = "Giriş yapan: " + (user.email || "Bilinmeyen kullanıcı");
+          if (!user.emailVerified) {
+            info += " (e-posta henüz doğrulanmadı)";
+          }
+          userEl.textContent = info;
           if (logoutBtn) logoutBtn.style.display = "inline-flex";
         } else {
           userEl.textContent = "Şu anda giriş yapmış kimse yok.";
@@ -358,7 +395,14 @@
               <input id="auth-mode" type="checkbox">
               <span class="muted">Yeni hesap oluşturmak istiyorum</span>
             </label>
+
             <button class="btn" type="submit">Devam et</button>
+
+            <!-- Şifremi unuttum -->
+            <button class="btn secondary" type="button" id="resetPassBtn">
+              Şifremi unuttum
+            </button>
+
             <p id="auth-msg" class="muted" style="min-height:1.2rem"></p>
           </form>
 
@@ -654,7 +698,7 @@
       e.preventDefault();
       const data = Object.fromEntries(new FormData(form).entries());
       if(!data.email.includes('@')){ msg.textContent = 'Please enter a valid email.'; return; }
-      msg.textContent = 'Thanks! We\\'ll get back to you within 24 hours.';
+      msg.textContent = "Thanks! We'll get back to you within 24 hours.";
       form.reset();
     });
 
@@ -959,13 +1003,13 @@
       const days = parseInt(document.getElementById('days').value||'3',10);
       const dest = document.getElementById('dest').value || 'Cappadocia';
       const items = Array.from(document.querySelectorAll('#planOut .card')).map((el,i)=>{
-        const text = el.innerText.replace(/\\n/g,' ');
+        const text = el.innerText.replace(/\n/g,' ');
         return {summary:`${titleBase} — Day ${i+1} • ${dest}`, description:text};
       });
       function dt(n){ const d=new Date(startStr); d.setDate(d.getDate()+n); return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z'; }
-      let ics = 'BEGIN:VCALENDAR\\nVERSION:2.0\\nCALSCALE:GREGORIAN\\nPRODID:-//TripMate//EN\\n';
+      let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\nPRODID:-//TripMate//EN\n';
       items.slice(0,days).forEach((it,i)=>{
-        ics+=`BEGIN:VEVENT\\nUID:${Date.now()}-${i}@tripmate\\nDTSTAMP:${dt(0)}\\nDTSTART:${dt(i)}\\nDTEND:${dt(i)}\\nSUMMARY:${it.summary}\\nDESCRIPTION:${it.description}\\nEND:VEVENT\\n`;
+        ics+=`BEGIN:VEVENT\nUID:${Date.now()}-${i}@tripmate\nDTSTAMP:${dt(0)}\nDTSTART:${dt(i)}\nDTEND:${dt(i)}\nSUMMARY:${it.summary}\nDESCRIPTION:${it.description}\nEND:VEVENT\n`;
       });
       ics+='END:VCALENDAR';
       const blob=new Blob([ics],{type:'text/calendar'});
