@@ -778,7 +778,14 @@
           <div class="card">
             <h3 style="margin:0 0 8px">Follow-me Map</h3>
             <div id="liveMap"></div>
-            <small class="muted">Demo: your location updates in real time if permission is granted.</small>
+
+<!-- ROTA SAPMA UYARISI BURADA GÖRÜNECEK -->
+<p id="routeWarning" class="muted" style="margin-top:8px;">
+  📍 Rota içinde görünüyorsun.
+</p>
+
+<small class="muted">Demo: your location updates in real time if permission is granted.</small>
+
           </div>
         </div>
       </div>
@@ -1161,6 +1168,48 @@
       rWrap.appendChild(c);
     });
 
+   // ---- LIVE MAP (geolocation) ----
+let liveMap, liveMarker, accCircle, watchId;
+
+// ROTA BAŞLANGIÇ NOKTASI VE İZİN VERİLEN MESAFE (metre)
+let routeStart = null;
+const ALLOWED_RADIUS_METERS = 500; // örnek: 500m'den fazla uzaklaşırsa uyar
+// İki nokta arasındaki mesafeyi (metre) hesapla – küçük Haversine fonksiyonu
+function distanceMeters(p1, p2) {
+  const R = 6371000; // Dünya yarıçapı (metre)
+  const toRad = (deg) => deg * Math.PI / 180;
+
+  const dLat = toRad(p2.lat - p1.lat);
+  const dLng = toRad(p2.lng - p1.lng);
+
+  const lat1 = toRad(p1.lat);
+  const lat2 = toRad(p2.lat);
+
+  const a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.sin(dLng/2) * Math.sin(dLng/2) * Math.cos(lat1) * Math.cos(lat2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+// Konum rota dışında mı, ona göre uyarı yazısını güncelle
+function checkDeviation(current) {
+  const warningEl = document.getElementById('routeWarning');
+  if (!warningEl || !routeStart) return;
+
+  const dist = distanceMeters(routeStart, current);
+
+  if (dist > ALLOWED_RADIUS_METERS) {
+    warningEl.textContent =
+      `⚠️ Rota dışında görünüyorsun (yaklaşık ${Math.round(dist)} m). Güzergahı kontrol et.`;
+    warningEl.style.color = '#fca5a5'; // hafif kırmızımsı
+  } else {
+    warningEl.textContent = '📍 Rota içinde görünüyorsun.';
+    warningEl.style.color = ''; // varsayılan muted rengi
+  }
+}
+
     // ---- LIVE MAP (geolocation) ----
     let liveMap, liveMarker, accCircle, watchId;
     function initLive(){
@@ -1173,35 +1222,36 @@
       }
       if(navigator.geolocation){
         if(watchId) navigator.geolocation.clearWatch(watchId);
-        watchId = navigator.geolocation.watchPosition(pos=>{
-          const {latitude:lat, longitude:lng, accuracy} = pos.coords;
-          if(!liveMarker){
-            liveMarker = L.marker([lat,lng]).addTo(liveMap).bindPopup('Me');
-          }
-          liveMarker.setLatLng([lat,lng]);
-          if(!accCircle){
-            accCircle = L.circle([lat,lng], {radius:accuracy}).addTo(liveMap);
-          }
-          accCircle.setLatLng([lat,lng]);
-          accCircle.setRadius(accuracy);
-          liveMap.setView([lat,lng]);
-        }, err=>{
-          alert('Location error: '+err.message);
-        }, {enableHighAccuracy:true, maximumAge:5000});
-      } else {
-        alert('Your browser does not support geolocation.');
-      }
-    }
-    const liveSection = document.getElementById('live');
-    const liveObserver = new IntersectionObserver((entries)=>{
-      if(entries[0].isIntersecting) initLive();
-    }, {threshold:.2});
-    liveObserver.observe(liveSection);
+    watchId = navigator.geolocation.watchPosition(pos=>{
+  const {latitude:lat, longitude:lng, accuracy} = pos.coords;
 
-    // Share toggle (demo)
-    document.getElementById('shareChk').addEventListener('change', (e)=>{
-      alert(e.target.checked ? 'Location sharing enabled (demo)' : 'Location sharing disabled (demo)');
-    });
+  // Şu anki konumu obje olarak al
+  const current = { lat, lng };
+
+  // İlk konumu rota başlangıcı olarak kaydet
+  if (!routeStart) {
+    routeStart = current;
+  }
+
+  // Harita marker ve daireleri güncelle
+  if(!liveMarker){
+    liveMarker = L.marker([lat,lng]).addTo(liveMap).bindPopup('Me');
+  }
+  liveMarker.setLatLng([lat,lng]);
+  if(!accCircle){
+    accCircle = L.circle([lat,lng], {radius:accuracy}).addTo(liveMap);
+  }
+  accCircle.setLatLng([lat,lng]);
+  accCircle.setRadius(accuracy);
+  liveMap.setView([lat,lng]);
+
+  // Rota sapma kontrolü
+  checkDeviation(current);
+
+}, err=>{
+  alert('Location error: '+err.message);
+}, {enableHighAccuracy:true, maximumAge:5000});
+
 
     // ---- GUIDE PLANS (click card -> modal) ----
     const guidePlans = {
@@ -1537,28 +1587,34 @@
           }
         });
 
-        forgotBtn?.addEventListener("click", async () => {
-          const email = emailInput.value.trim();
-          if (!email) {
-            msgEl.textContent = "Şifre sıfırlamak için önce e-posta yaz.";
-            return;
-          }
-          msgEl.textContent = "Şifre sıfırlama maili gönderiliyor...";
-          try {
-            await sendPasswordResetEmail(auth, email);
-            msgEl.textContent = "📧 Şifre sıfırlama linki e-postana gönderildi.";
-          } catch (err) {
-            console.error(err);
-            msgEl.textContent = "Şifre sıfırlama sırasında hata: " + (err.message || "");
-          }
-        });
-
+        // Çıkış
         logoutBtn?.addEventListener("click", async () => {
           try {
             await signOut(auth);
           } catch (err) {
             console.error(err);
             msgEl.textContent = "Çıkış yapılırken hata oluştu.";
+          }
+        });
+
+        // ----------- ŞİFREMİ UNUTTUM -----------
+        forgotBtn?.addEventListener("click", async () => {
+          const email = emailInput.value.trim();
+
+          if (!email) {
+            msgEl.textContent = "Şifre sıfırlamak için önce e-posta yaz.";
+            return;
+          }
+
+          msgEl.textContent = "Şifre sıfırlama maili gönderiliyor...";
+
+          try {
+            await sendPasswordResetEmail(auth, email);
+            msgEl.textContent =
+              "📨 Eğer bu e-posta ile kayıtlı bir hesabın varsa, mail gönderildi. Spam klasörüne bakmayı unutma!";
+          } catch (err) {
+            console.error(err);
+            msgEl.textContent = "Hata oluştu: " + (err.message || "");
           }
         });
       }
@@ -1864,3 +1920,4 @@
   </script>
 </body>
 </html>
+
