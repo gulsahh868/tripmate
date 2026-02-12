@@ -254,6 +254,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="container nav" role="navigation" aria-label="Primary">
@@ -527,190 +528,6 @@
       </div>
     </section>
 
-    <!-- GUIDE / BUDDY APPLICATION -->
-    <section id="guide-apply" class="section">
-      <div class="container">
-        <h2 style="margin:0 0 10px">Rehber / Yol Arkadaşı Başvurusu</h2>
-        <p class="muted" style="margin:0 0 14px">
-          TripMate üzerinde profesyonel rehber veya arkadaşça yol arkadaşı olarak görünmek için aşağıdaki formu doldur.
-          Güvenlik için bazı bilgiler zorunludur. Fotoğraf ve belge yüklemeleri sadece ekibimiz tarafından görülecektir.
-        </p>
-
-        <div class="grid-2">
-          <!-- SOL: FORM -->
-          <form id="guide-apply-form" class="card" style="display:grid;gap:.7rem">
-            <h3>Kişisel Bilgiler</h3>
-
-            <label>
-              <span class="muted">Ad Soyad</span>
-              <input class="input" name="fullName" required placeholder="Örn. Ayşe Kaya">
-            </label>
-
-            <label>
-              <span class="muted">Doğum Tarihi</span>
-              <input class="input" type="date" name="birthdate" required>
-            </label>
-
-            <label>
-              <span class="muted">TC / Pasaport Numarası</span>
-              <input class="input" name="idNumber" required placeholder="Örn. 12345678901">
-            </label>
-
-            <label>
-              <span class="muted">Şehir / Bölge</span>
-              <input class="input" name="city" required placeholder="Örn. Kapadokya, İstanbul">
-            </label>
-
-            <h3>İletişim</h3>
-
-            <label>
-              <span class="muted">Telefon</span>
-              <input class="input" name="phone" required placeholder="+90 ...">
-            </label>
-
-            <label>
-              <span class="muted">Acil Durum Kişisi</span>
-              <input class="input" name="emergencyName" required placeholder="Örn. Anne / Kardeş / Arkadaş">
-            </label>
-
-            <label>
-              <span class="muted">Acil Durum Telefonu</span>
-              <input class="input" name="emergencyPhone" required placeholder="+90 ...">
-            </label>
-
-            <h3>Rol ve Uzmanlık</h3>
-
-            <label>
-              <span class="muted">Rolün</span>
-              <select class="input" name="role" required>
-                <option value="guide">Profesyonel Rehber</option>
-                <option value="buddy">Arkadaşça Yol Arkadaşı</option>
-              </select>
-            </label>
-
-            <label>
-              <span class="muted">Konuştuğun diller</span>
-              <input class="input" name="langs" required placeholder="Örn. TR, EN, DE">
-            </label>
-
-            <label>
-              <span class="muted">Günlük Ücret (₺)</span>
-              <input class="input" type="number" min="0" name="pricePerDay" required placeholder="Örn. 1500">
-            </label>
-
-            <label style="display:flex;align-items:center;gap:.5rem;margin-top:.3rem">
-              <input type="checkbox" name="isLicensed">
-              <span class="muted">Resmî / lisanslı rehberim</span>
-            </label>
-
-            <label>
-              <span class="muted">Kendini anlat (uzmanlık, deneyim vb.)</span>
-              <textarea class="input" name="about" rows="4" required></textarea>
-            </label>
-
-            <h3>Fotoğraf & Belge</h3>
-
-            <label>
-              <span class="muted">Profil fotoğrafı (yüzün net görünsün)</span>
-              <input class="input" type="file" name="profilePhoto" accept="image/*">
-            </label>
-
-            <label>
-              <span class="muted">Kimlik / Rehberlik belgesi (PDF veya fotoğraf)</span>
-              <input class="input" type="file" name="idDocument" accept=".pdf,image/*">
-            </label>
-
-            <h3>Güvenlik Onayı</h3>
-
-            <label style="display:flex;align-items:center;gap:.6rem">
-              <input type="checkbox" name="noCriminal" required>
-              <span class="muted">Adli sicil kaydımda problem olmadığını beyan ediyorum.</span>
-            </label>
-
-            <label style="display:flex;align-items:center;gap:.6rem">
-              <input type="checkbox" name="infoCorrect" required>
-              <span class="muted">Verdiğim bilgilerin doğru olduğunu onaylıyorum.</span>
-            </label>
-
-            <button class="btn" type="submit">Başvuruyu Gönder</button>
-            <p id="guide-apply-msg" class="muted" style="min-height:1.2rem"></p>
-          </form>
-
-          <!-- SAĞ: BİLGİ KARTI -->
-          <div class="card" style="display:grid;gap:.5rem">
-            <h3>Başvuru süreci nasıl işliyor?</h3>
-            <ul class="muted" style="padding-left:1rem;line-height:1.8;font-size:.95rem">
-              <li>Önce TripMate hesabına e-posta + şifre ile giriş yapman gerekiyor.</li>
-              <li>Formu gönderdiğinde başvurun “beklemede” durumuna alınır.</li>
-              <li>Ekibimiz bilgilerini ve belgelerini inceler.</li>
-              <li>Onaylandığında profilin rehber / yol arkadaşı listesinde görünür.</li>
-            </ul>
-            <p class="muted" style="font-size:.85rem;margin-top:.4rem">
-              Not: Şu an demo aşamasındayız. Veriler Firestore + Storage’da güvenli şekilde saklanır
-              ve herkese açık gösterilmez.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- COMPANIONS -->
-    <section id="companions" class="section">
-      <div class="container">
-        <h2>Nasıl Gezmek İstersin?</h2>
-        <p class="section-subtitle">
-          İstersen lisanslı bir rehberle detaylı tur yap, istersen rehber olmayan, şehirde yaşayan bir yol arkadaşıyla
-          daha arkadaşça ve rahat bir gün geçir.
-        </p>
-
-        <div class="companion-grid">
-          <article class="companion-card companion-card--guide">
-            <div class="companion-icon">🎓</div>
-            <h3>Gerçek (Lisanslı) Rehberler</h3>
-            <p>
-              Bölgeyi çok iyi bilen, resmi lisanslı rehberler eşliğinde müzeleri, tarihi noktaları ve gizli kalmış
-              yerleri derinlemesine keşfet.
-            </p>
-            <ul class="companion-list">
-              <li>Resmî lisanslı, denetlenmiş rehber profilleri</li>
-              <li>Tarih ve kültür ağırlıklı planlı turlar</li>
-              <li>Belirli rota, saat ve program</li>
-              <li>Özel veya küçük grup seçenekleri</li>
-            </ul>
-            <button class="btn companion-btn" id="btnProGuides">
-              Profesyonel rehberle gezmek istiyorum
-            </button>
-          </article>
-
-          <article class="companion-card companion-card--friend">
-            <div class="companion-icon">🤝</div>
-            <h3>Arkadaşça Yol Arkadaşı</h3>
-            <p>
-              Şehirde yaşayan, rehber olmayan ama seni gezdirmek isteyen kişilerle sokak sokak dolaş, kafelere otur,
-              yerel hayatı daha samimi bir şekilde deneyimle.
-            </p>
-            <ul class="companion-list">
-              <li>Rehber olmayan, arkadaş ortamında gezi deneyimi</li>
-              <li>Kafeler, sokaklar, yerel mahalleler</li>
-              <li>Daha esnek, sohbet odaklı rota</li>
-              <li>Yeni insanlar tanıma ve pratik yapma fırsatı</li>
-            </ul>
-            <button class="btn secondary companion-btn" id="btnFriendComp">
-              Arkadaşça gezmek istiyorum
-            </button>
-          </article>
-        </div>
-
-        <div id="proGuidesList" class="companion-people" hidden></div>
-        <div id="friendCompList" class="companion-people" hidden></div>
-
-        <p class="companions-note">
-          Not: TripMate’de ileride hem rehberlerin hem de yol arkadaşlarının profillerini, yorumlarını ve güvenlik
-          puanlarını görerek seçim yapabileceksin. Şimdilik bu bölüm konsepti tanıtmak içindir.
-        </p>
-      </div>
-    </section>
-
     <!-- MESSAGES (rehberle sohbet) -->
     <section id="messages" class="section" style="display:none">
       <div class="container">
@@ -720,7 +537,6 @@
         </p>
 
         <div class="grid-2">
-          <!-- Sol: Mesaj gönderme formu -->
           <form id="message-form" class="card" style="display:grid;gap:.7rem">
             <label>
               <span class="muted">Kime</span>
@@ -750,7 +566,6 @@
             <button class="btn" type="submit">Mesajı gönder</button>
           </form>
 
-          <!-- Sağ: Mesaj listesi -->
           <div class="card" style="display:grid;gap:.5rem">
             <h3>Son mesajların</h3>
             <div id="messageList" class="companion-people">
@@ -778,105 +593,7 @@
           <div class="card">
             <h3 style="margin:0 0 8px">Follow-me Map</h3>
             <div id="liveMap"></div>
-
-<!-- ROTA SAPMA UYARISI BURADA GÖRÜNECEK -->
-<p id="routeWarning" class="muted" style="margin-top:8px;">
-  📍 Rota içinde görünüyorsun.
-</p>
-
-<small class="muted">Demo: your location updates in real time if permission is granted.</small>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- REVIEWS -->
-    <section id="reviews" class="section">
-      <div class="container">
-        <h2 style="margin:0 0 10px">Reviews & Ratings</h2>
-        <div id="reviewsWrap" class="grid-3"></div>
-      </div>
-    </section>
-
-    <!-- POPULAR -->
-    <section class="section">
-      <div class="container">
-        <h2 style="margin:0 0 12px">Popular right now</h2>
-        <div class="gallery" aria-label="Destination gallery">
-          <img src="https://images.unsplash.com/photo-1505764706515-aa95265c5abc?q=80&w=1200&auto=format&fit=crop" alt="Santorini" />
-          <img src="https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?q=80&w=1200&auto=format&fit=crop" alt="Kyoto" />
-          <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1200&auto=format&fit=crop" alt="New York" />
-          <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad?q=80&w=1200&auto=format&fit=crop" alt="Cappadocia" />
-          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop" alt="Iceland" />
-          <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?q=80&w=1200&auto=format&fit=crop" alt="Paris" />
-        </div>
-      </div>
-    </section>
-
-    <!-- PRICING -->
-    <section id="pricing" class="section">
-      <div class="container">
-        <h2 style="margin:0 0 8px">Simple, fair pricing</h2>
-        <p class="muted" style="margin:0 0 20px">Try every feature free for 7 days — cancel anytime.</p>
-        <div class="grid-3">
-          <div class="card">
-            <div class="muted">Starter</div>
-            <div style="font-size:2.1rem;font-weight:800">Free</div>
-            <ul class="muted" style="padding-left:1rem;line-height:2">
-              <li>1 active trip</li>
-              <li>Basic itinerary builder</li>
-              <li>Community guides</li>
-            </ul>
-            <button class="btn secondary">Get started</button>
-          </div>
-          <div class="card" style="outline:2px solid var(--brand);box-shadow:0 0 0 6px rgba(168,124,82,.15)">
-            <div class="muted">Pro</div>
-            <div style="font-size:2.1rem;font-weight:800">$6<span style="font-size:1rem;font-weight:600">/mo</span></div>
-            <ul class="muted" style="padding-left:1rem;line-height:2">
-              <li>Unlimited trips</li>
-              <li>AI optimizations</li>
-              <li>Shared budgets</li>
-              <li>Offline access</li>
-            </ul>
-            <button class="btn">Start free trial</button>
-          </div>
-          <div class="card">
-            <div class="muted">Teams</div>
-            <div style="font-size:2.1rem;font-weight:800">$12<span style="font-size:1rem;font-weight:600">/user</span></div>
-            <ul class="muted" style="padding-left:1rem;line-height:2">
-              <li>Workspace & roles</li>
-              <li>Approvals</li>
-              <li>Priority support</li>
-            </ul>
-            <button class="btn secondary">Talk to sales</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section">
-      <div class="container">
-        <div class="grid-3" style="align-items:start">
-          <div style="grid-column: span 2">
-            <h2 style="margin:0 0 10px">Contact us</h2>
-            <p class="muted">Questions, partnerships, or press? We’d love to hear from you.</p>
-            <form class="card" id="contact-form" style="display:grid;gap:.75rem">
-              <label><span class="muted">Name</span><input class="input" required name="name" placeholder="Your name" /></label>
-              <label><span class="muted">Email</span><input class="input" required type="email" name="email" placeholder="you@example.com" /></label>
-              <label><span class="muted">Message</span><textarea class="input" required name="message" rows="4" placeholder="How can we help?"></textarea></label>
-              <button class="btn" type="submit">Send message</button>
-              <p id="form-msg" class="muted" role="status" aria-live="polite"></p>
-            </form>
-          </div>
-          <div class="card">
-            <h3>Company</h3>
-            <p class="muted">TripMate Labs<br/>123 Traveler Ave<br/>Anywhere, Earth</p>
-            <h3>Support</h3>
-            <p class="muted">help@tripmate.app</p>
-            <h3>Follow</h3>
-            <p class="muted">Instagram • X • TikTok</p>
+            <small class="muted">Demo: your location updates in real time if permission is granted.</small>
           </div>
         </div>
       </div>
@@ -887,13 +604,10 @@
       <div class="dialog">
         <header>
           <h3 id="guidePlanTitle" style="margin:0">Guide Plan</h3>
-          <div style="display:flex;gap:8px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
             <a class="btn" id="bookGuide" href="#" title="Checkout (demo)">Book with Stripe</a>
             <button class="btn secondary" id="useThisPlan">Use this plan</button>
-            <!-- yeni buton -->
-            <button class="btn secondary" id="chatWithGuideBtn" type="button">
-              Bu rehberle mesajlaş
-            </button>
+            <button class="btn secondary" id="chatWithGuideBtn" type="button">Bu rehberle mesajlaş</button>
             <button class="close" id="closeGuidePlan">Close</button>
           </div>
         </header>
@@ -909,7 +623,7 @@
     </div>
   </footer>
 
-  <!-- UI / MAP / MOCK DATA SCRIPT (module değil!) -->
+  <!-- UI / MAP / MOCK DATA SCRIPT -->
   <script>
     // Mobile menu toggle
     const toggle = document.querySelector('.mobile-toggle');
@@ -922,26 +636,15 @@
       });
     }
 
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
     // CTA
     document.getElementById('cta')?.addEventListener('click',()=>{
       document.getElementById('plan').scrollIntoView({behavior:'smooth'});
       const d=document.getElementById('heroDest').value; if(d) document.getElementById('dest').value=d;
       const s=document.getElementById('heroStart').value; if(s) document.getElementById('startDate').value=s;
     });
-
-    // Contact form demo
-    const formContact = document.getElementById('contact-form');
-    const msgContact = document.getElementById('form-msg');
-    formContact?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(formContact).entries());
-      if(!data.email.includes('@')){ msgContact.textContent = 'Please enter a valid email.'; return; }
-      msgContact.textContent = 'Thanks! We\'ll get back to you within 24 hours.';
-      formContact.reset();
-    });
-
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
 
     // ---- DATA (mock) ----
     const mockPOI = [
@@ -963,102 +666,6 @@
       {who:'Zeynep', text:'Our guide was super helpful and the route flowed well.', stars:5},
       {who:'Mert', text:'Safety sharing made me feel relaxed.', stars:4}
     ];
-
-    // ---- COMPANION PEOPLE (demo data) ----
-    const proGuidePeople = [
-      {
-        name: 'Ayşe K.',
-        city: 'Kapadokya',
-        badge: 'Licensed guide',
-        langs: 'TR, EN',
-        about: 'Kapadokya’da tarih ve fotoğraf odaklı, küçük grup turları düzenliyor.'
-      },
-      {
-        name: 'Mehmet B.',
-        city: 'İstanbul',
-        badge: 'Museum & history',
-        langs: 'TR, EN',
-        about: 'Tarihi yarımada, müzeler ve gizli sokaklar üzerine yürüyüş turları.'
-      },
-      {
-        name: 'Elif D.',
-        city: 'İzmir / Ege',
-        badge: 'Food & wine',
-        langs: 'TR, EN, DE',
-        about: 'Ege bölgesinde yerel lezzetler ve butik köy rotaları hazırlıyor.'
-      }
-    ];
-
-    const friendCompanions = [
-      {
-        name: 'Can',
-        city: 'İstanbul',
-        badge: 'Local buddy',
-        langs: 'TR, EN',
-        about: 'Kafeler, sahil yürüyüşleri ve gece hayatı için arkadaşça eşlik ediyor.'
-      },
-      {
-        name: 'Sara',
-        city: 'Kapadokya',
-        badge: 'Photo buddy',
-        langs: 'EN',
-        about: 'Balon kalkış noktaları ve manzara spotlarını bilen, fotoğraf çekmeyi seven yol arkadaşı.'
-      },
-      {
-        name: 'Burcu',
-        city: 'İzmir',
-        badge: 'Cafe hopper',
-        langs: 'TR',
-        about: 'Kordon, Karşıyaka ve ara sokak kafelerinde chill geziler yapmayı seviyor.'
-      }
-    ];
-
-    function renderCompanions(targetId, data, titleText) {
-      const wrap = document.getElementById(targetId);
-      if (!wrap) return;
-      wrap.hidden = false;
-      wrap.innerHTML = '';
-
-      if (titleText) {
-        const label = document.createElement('div');
-        label.className = 'muted';
-        label.style.fontSize = '.9rem';
-        label.style.marginBottom = '.3rem';
-        label.textContent = titleText;
-        wrap.appendChild(label);
-      }
-
-      data.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'companion-person';
-        card.innerHTML = `
-          <div class="companion-person-header">
-            <strong>${p.name}</strong>
-            <span class="tag">${p.badge}</span>
-          </div>
-          <div class="muted">${p.city} • ${p.langs}</div>
-          <p class="muted" style="margin:.4rem 0 0;">${p.about}</p>
-        `;
-        wrap.appendChild(card);
-      });
-
-      wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    const btnProGuides = document.getElementById('btnProGuides');
-    const btnFriendComp = document.getElementById('btnFriendComp');
-
-    btnProGuides?.addEventListener('click', () => {
-      renderCompanions('proGuidesList', proGuidePeople, 'Profesyonel rehberlerden bazı örnek profiller:');
-      const friendList = document.getElementById('friendCompList');
-      if (friendList) friendList.hidden = true;
-    });
-
-    btnFriendComp?.addEventListener('click', () => {
-      renderCompanions('friendCompList', friendCompanions, 'Arkadaşça yol arkadaşlarından bazı örnek profiller:');
-      const proList = document.getElementById('proGuidesList');
-      if (proList) proList.hidden = true;
-    });
 
     // ---- PLAN BUILDER + MAP ----
     let planMap, planLayer;
@@ -1096,7 +703,7 @@
         poisWrap.appendChild(c);
       });
     }
-    document.getElementById('buildPlan').addEventListener('click', buildPlan);
+    document.getElementById('buildPlan')?.addEventListener('click', buildPlan);
 
     // ---- GUIDES FILTER ----
     function renderGuides(){
@@ -1121,7 +728,7 @@
           list.appendChild(row);
         });
     }
-    ['city','lang','maxPrice'].forEach(id=>document.getElementById(id).addEventListener('input',renderGuides));
+    ['city','lang','maxPrice'].forEach(id=>document.getElementById(id)?.addEventListener('input',renderGuides));
     renderGuides();
 
     // ---- FEATURED GUIDES ----
@@ -1168,48 +775,6 @@
       rWrap.appendChild(c);
     });
 
-   // ---- LIVE MAP (geolocation) ----
-let liveMap, liveMarker, accCircle, watchId;
-
-// ROTA BAŞLANGIÇ NOKTASI VE İZİN VERİLEN MESAFE (metre)
-let routeStart = null;
-const ALLOWED_RADIUS_METERS = 500; // örnek: 500m'den fazla uzaklaşırsa uyar
-// İki nokta arasındaki mesafeyi (metre) hesapla – küçük Haversine fonksiyonu
-function distanceMeters(p1, p2) {
-  const R = 6371000; // Dünya yarıçapı (metre)
-  const toRad = (deg) => deg * Math.PI / 180;
-
-  const dLat = toRad(p2.lat - p1.lat);
-  const dLng = toRad(p2.lng - p1.lng);
-
-  const lat1 = toRad(p1.lat);
-  const lat2 = toRad(p2.lat);
-
-  const a =
-    Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.sin(dLng/2) * Math.sin(dLng/2) * Math.cos(lat1) * Math.cos(lat2);
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
-}
-
-// Konum rota dışında mı, ona göre uyarı yazısını güncelle
-function checkDeviation(current) {
-  const warningEl = document.getElementById('routeWarning');
-  if (!warningEl || !routeStart) return;
-
-  const dist = distanceMeters(routeStart, current);
-
-  if (dist > ALLOWED_RADIUS_METERS) {
-    warningEl.textContent =
-      `⚠️ Rota dışında görünüyorsun (yaklaşık ${Math.round(dist)} m). Güzergahı kontrol et.`;
-    warningEl.style.color = '#fca5a5'; // hafif kırmızımsı
-  } else {
-    warningEl.textContent = '📍 Rota içinde görünüyorsun.';
-    warningEl.style.color = ''; // varsayılan muted rengi
-  }
-}
-
     // ---- LIVE MAP (geolocation) ----
     let liveMap, liveMarker, accCircle, watchId;
     function initLive(){
@@ -1220,38 +785,50 @@ function checkDeviation(current) {
           attribution:'© OSM'
         }).addTo(liveMap);
       }
-      if(navigator.geolocation){
-        if(watchId) navigator.geolocation.clearWatch(watchId);
-    watchId = navigator.geolocation.watchPosition(pos=>{
-  const {latitude:lat, longitude:lng, accuracy} = pos.coords;
 
-  // Şu anki konumu obje olarak al
-  const current = { lat, lng };
+      if(!navigator.geolocation){
+        alert('Your browser does not support geolocation.');
+        return;
+      }
 
-  // İlk konumu rota başlangıcı olarak kaydet
-  if (!routeStart) {
-    routeStart = current;
-  }
+      // İlk konumu hızlı göstermek için:
+      navigator.geolocation.getCurrentPosition(
+        (pos)=>{
+          const {latitude:lat, longitude:lng, accuracy} = pos.coords;
+          if(!liveMarker){ liveMarker = L.marker([lat,lng]).addTo(liveMap).bindPopup('Me'); }
+          liveMarker.setLatLng([lat,lng]).openPopup();
+          if(!accCircle){ accCircle = L.circle([lat,lng], {radius:accuracy}).addTo(liveMap); }
+          accCircle.setLatLng([lat,lng]); accCircle.setRadius(accuracy);
+          liveMap.setView([lat,lng], 15);
+          setTimeout(()=>liveMap.invalidateSize(true), 200);
+        },
+        (err)=>{ console.warn(err); },
+        {enableHighAccuracy:true, maximumAge:2000, timeout:10000}
+      );
 
-  // Harita marker ve daireleri güncelle
-  if(!liveMarker){
-    liveMarker = L.marker([lat,lng]).addTo(liveMap).bindPopup('Me');
-  }
-  liveMarker.setLatLng([lat,lng]);
-  if(!accCircle){
-    accCircle = L.circle([lat,lng], {radius:accuracy}).addTo(liveMap);
-  }
-  accCircle.setLatLng([lat,lng]);
-  accCircle.setRadius(accuracy);
-  liveMap.setView([lat,lng]);
+      // Sürekli takip:
+      if(watchId) navigator.geolocation.clearWatch(watchId);
+      watchId = navigator.geolocation.watchPosition(pos=>{
+        const {latitude:lat, longitude:lng, accuracy} = pos.coords;
+        if(!liveMarker){ liveMarker = L.marker([lat,lng]).addTo(liveMap).bindPopup('Me'); }
+        liveMarker.setLatLng([lat,lng]);
+        if(!accCircle){ accCircle = L.circle([lat,lng], {radius:accuracy}).addTo(liveMap); }
+        accCircle.setLatLng([lat,lng]);
+        accCircle.setRadius(accuracy);
+      }, err=>{
+        alert('Location error: '+err.message);
+      }, {enableHighAccuracy:true, maximumAge:5000, timeout:20000});
+    }
 
-  // Rota sapma kontrolü
-  checkDeviation(current);
+    const liveSection = document.getElementById('live');
+    const liveObserver = new IntersectionObserver((entries)=>{
+      if(entries[0].isIntersecting) initLive();
+    }, {threshold:.2});
+    liveObserver.observe(liveSection);
 
-}, err=>{
-  alert('Location error: '+err.message);
-}, {enableHighAccuracy:true, maximumAge:5000});
-
+    document.getElementById('shareChk')?.addEventListener('change', (e)=>{
+      alert(e.target.checked ? 'Location sharing enabled (demo)' : 'Location sharing disabled (demo)');
+    });
 
     // ---- GUIDE PLANS (click card -> modal) ----
     const guidePlans = {
@@ -1274,11 +851,12 @@ function checkDeviation(current) {
     const body = document.getElementById('guidePlanBody');
     const title = document.getElementById('guidePlanTitle');
     let currentGuide = null;
-    window.currentGuide = currentGuide;
+    window.currentGuide = "";
 
     function openGuidePlan(name){
       currentGuide = name;
       window.currentGuide = name;
+
       title.textContent = `${name} — Suggested Itinerary`;
       const plan = guidePlans[name] || [{day:1, items:['Custom day plan will be arranged after booking.']}];
       body.innerHTML = '';
@@ -1296,27 +874,26 @@ function checkDeviation(current) {
       modal.setAttribute('aria-hidden','false');
     }
 
-    document.getElementById('closeGuidePlan').addEventListener('click', ()=>{
+    document.getElementById('closeGuidePlan')?.addEventListener('click', ()=>{
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden','true');
     });
     modal.addEventListener('click', (e)=>{
       if(e.target.id==='guidePlanModal'){
-        document.getElementById('closeGuidePlan').click();
+        document.getElementById('closeGuidePlan')?.click();
       }
     });
 
-    document.getElementById('guideList').addEventListener('click', (e)=>{
+    document.getElementById('guideList')?.addEventListener('click', (e)=>{
       const card = e.target.closest('.guide');
       if(!card) return;
       const name = card.getAttribute('data-name') || card.querySelector('strong')?.textContent?.trim();
       if(name) openGuidePlan(name);
     });
 
-    // Use plan -> fill Plan Trip section
-    document.getElementById('useThisPlan').addEventListener('click', ()=>{
+    document.getElementById('useThisPlan')?.addEventListener('click', ()=>{
       if(!currentGuide) return;
-      const plan = guidePlans[currentGuide];
+      const plan = guidePlans[currentGuide] || [];
       const out = document.getElementById('planOut');
       out.innerHTML = '';
       plan.forEach(d=>{
@@ -1329,44 +906,20 @@ function checkDeviation(current) {
           </ul>`;
         out.appendChild(card);
       });
-      document.getElementById('plan').scrollIntoView({behavior:'smooth'});
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden','true');
+      document.getElementById('plan')?.scrollIntoView({behavior:'smooth'});
+      document.getElementById('closeGuidePlan')?.click();
     });
 
-    // ICS DOWNLOAD
-    function buildICS(){
-      const titleBase = 'TripMate Itinerary';
-      const startStr = document.getElementById('startDate').value || new Date().toISOString().slice(0,10);
-      const days = parseInt(document.getElementById('days').value||'3',10);
-      const dest = document.getElementById('dest').value || 'Cappadocia';
-      const items = Array.from(document.querySelectorAll('#planOut .card')).map((el,i)=>{
-        const text = el.innerText.replace(/\n/g,' ');
-        return {
-          summary:`${titleBase} — Day ${i+1} • ${dest}`,
-          description:text
-        };
-      });
-      function dt(n){
-        const d=new Date(startStr);
-        d.setDate(d.getDate()+n);
-        return d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
-      }
-      let ics = 'BEGIN:VCALENDAR\nVERSION:2.0\nCALSCALE:GREGORIAN\nPRODID:-//TripMate//EN\n';
-      items.slice(0,days).forEach((it,i)=>{
-        ics+=`BEGIN:VEVENT\nUID:${Date.now()}-${i}@tripmate\nDTSTAMP:${dt(0)}\nDTSTART:${dt(i)}\nDTEND:${dt(i)}\nSUMMARY:${it.summary}\nDESCRIPTION:${it.description}\nEND:VEVENT\n`;
-      });
-      ics+='END:VCALENDAR';
-      const blob=new Blob([ics],{type:'text/calendar'});
-      const a=document.createElement('a');
-      a.href=URL.createObjectURL(blob);
-      a.download='tripmate-itinerary.ics';
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
-    document.getElementById('downloadICS').addEventListener('click', buildICS);
-
     // ---- LANGUAGE TOGGLE (EN/TR basic) ----
+    const mFeatures = document.getElementById('mFeatures');
+    const mPlan = document.getElementById('mPlan');
+    const mGuides = document.getElementById('mGuides');
+    const mCompanions = document.getElementById('mCompanions');
+    const mLive = document.getElementById('mLive');
+    const mReviews = document.getElementById('mReviews');
+    const mPricing = document.getElementById('mPricing');
+    const mContact = document.getElementById('mContact');
+
     const i18n = {
       en:{
         menu:{
@@ -1401,38 +954,37 @@ function checkDeviation(current) {
         }
       }
     };
+
     function setLang(L){
       const t=i18n[L]; document.documentElement.lang=L;
-      mFeatures.textContent=t.menu.features;
-      mPlan.textContent=t.menu.plan;
-      mGuides.textContent=t.menu.guides;
-      mCompanions.textContent=t.menu.companions;
-      mLive.textContent=t.menu.live;
-      mReviews.textContent=t.menu.reviews;
-      mPricing.textContent=t.menu.pricing;
-      mContact.textContent=t.menu.contact;
-      document.getElementById('heroLead').textContent=t.hero.lead;
-      document.getElementById('cta').textContent=t.hero.cta;
-      document.getElementById('heroDest')
-        .setAttribute('placeholder',
-          L==='en'
-            ? 'Where to? e.g., Rome, Kyoto, Cappadocia'
-            : 'Nereye? Örn. Roma, Kyoto, Kapadokya');
-    }
-    document.getElementById('langEN').onclick=()=>setLang('en');
-    document.getElementById('langTR').onclick=()=>setLang('tr');
-    setLang('en');
 
-    // featured mini cards -> open modal
-    document.getElementById('featuredGuides').addEventListener('click', (e)=>{
-      const card = e.target.closest('.mini-card');
-      if(!card) return;
-      const name = card.getAttribute('data-name');
-      if(name) openGuidePlan(name);
-    });
+      if(mFeatures) mFeatures.textContent=t.menu.features;
+      if(mPlan) mPlan.textContent=t.menu.plan;
+      if(mGuides) mGuides.textContent=t.menu.guides;
+      if(mCompanions) mCompanions.textContent=t.menu.companions;
+      if(mLive) mLive.textContent=t.menu.live;
+      if(mReviews) mReviews.textContent=t.menu.reviews;
+      if(mPricing) mPricing.textContent=t.menu.pricing;
+      if(mContact) mContact.textContent=t.menu.contact;
+
+      const heroLead = document.getElementById('heroLead');
+      const ctaBtn = document.getElementById('cta');
+      if(heroLead) heroLead.textContent=t.hero.lead;
+      if(ctaBtn) ctaBtn.textContent=t.hero.cta;
+
+      document.getElementById('heroDest')?.setAttribute(
+        'placeholder',
+        L==='en'
+          ? 'Where to? e.g., Rome, Kyoto, Cappadocia'
+          : 'Nereye? Örn. Roma, Kyoto, Kapadokya'
+      );
+    }
+    document.getElementById('langEN')?.addEventListener('click', ()=>setLang('en'));
+    document.getElementById('langTR')?.addEventListener('click', ()=>setLang('tr'));
+    setLang('en');
   </script>
 
-  <!-- FIREBASE + AUTH + PROFILE + GUIDE APPLY + MESSAGES -->
+  <!-- FIREBASE + AUTH + PROFILE + MESSAGES -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
     import {
@@ -1475,14 +1027,11 @@ function checkDeviation(current) {
     };
 
     const app      = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
+    getAnalytics(app);
     const auth     = getAuth(app);
     const db       = getFirestore(app);
     const storage  = getStorage(app);
 
-    console.log("✅ Firebase bağlı, app adı:", app.name);
-
-    // Kullanıcı Firestore kaydı yoksa oluşturan fonksiyon
     async function ensureUserDoc(user) {
       if (!user) return;
       const refDoc = doc(db, "users", user.uid);
@@ -1493,7 +1042,6 @@ function checkDeviation(current) {
           role: null,
           createdAt: serverTimestamp()
         });
-        console.log("🗂 Firestore: users koleksiyonuna yeni kullanıcı eklendi:", user.uid);
       }
     }
 
@@ -1523,13 +1071,7 @@ function checkDeviation(current) {
       const previewRole  = document.getElementById("preview-role");
       const previewCity  = document.getElementById("preview-city");
 
-      // REHBER BAŞVURU
-      const guideForm   = document.getElementById("guide-apply-form");
-      const guideMsg    = document.getElementById("guide-apply-msg");
-      const profileInput = guideForm?.querySelector('input[name="profilePhoto"]');
-      const idDocInput   = guideForm?.querySelector('input[name="idDocument"]');
-
-      // MESAJLAŞMA
+      // MESSAGES
       const messagesSection  = document.getElementById("messages");
       const messagesInfo     = document.getElementById("messages-info");
       const chatWithGuideBtn = document.getElementById("chatWithGuideBtn");
@@ -1539,7 +1081,6 @@ function checkDeviation(current) {
       const targetRoleSel    = document.getElementById("targetRole");
       const targetNameInp    = document.getElementById("targetName");
 
-      // Profil preview
       function updatePreview() {
         if (previewName) previewName.textContent = profileName?.value || "-";
         if (previewRole) {
@@ -1556,70 +1097,60 @@ function checkDeviation(current) {
       profileCity?.addEventListener("input", updatePreview);
       profileRole?.addEventListener("change", updatePreview);
 
-      // ---------- AUTH ----------
-      if (form) {
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          msgEl.textContent = "İşleniyor...";
+      // AUTH
+      form?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        msgEl.textContent = "İşleniyor...";
 
-          const email = emailInput.value.trim();
-          const password = passInput.value;
+        const email = emailInput.value.trim();
+        const password = passInput.value;
 
-          try {
-            if (modeInput.checked) {
-              const cred = await createUserWithEmailAndPassword(auth, email, password);
-              await ensureUserDoc(cred.user);
-              try {
-                await sendEmailVerification(cred.user);
-                msgEl.textContent = "🎉 Hesap oluşturuldu. Lütfen e-postanı kontrol edip doğrula.";
-              } catch (mailErr) {
-                console.error(mailErr);
-                msgEl.textContent = "Hesap oluşturuldu ama doğrulama maili gönderilirken hata oldu.";
-              }
-            } else {
-              const cred = await signInWithEmailAndPassword(auth, email, password);
-              await ensureUserDoc(cred.user);
-              msgEl.textContent = "✅ Giriş başarılı.";
+        try {
+          if (modeInput.checked) {
+            const cred = await createUserWithEmailAndPassword(auth, email, password);
+            await ensureUserDoc(cred.user);
+            try {
+              await sendEmailVerification(cred.user);
+              msgEl.textContent = "🎉 Hesap oluşturuldu. Lütfen e-postanı kontrol edip doğrula.";
+            } catch {
+              msgEl.textContent = "Hesap oluşturuldu ama doğrulama maili gönderilirken hata oldu.";
             }
-          } catch (err) {
-            console.error(err);
-            msgEl.textContent = "⚠️ " + (err.message || "Bir hata oluştu.");
+          } else {
+            const cred = await signInWithEmailAndPassword(auth, email, password);
+            await ensureUserDoc(cred.user);
+            msgEl.textContent = "✅ Giriş başarılı.";
           }
-        });
+        } catch (err) {
+          console.error(err);
+          msgEl.textContent = "⚠️ " + (err.message || "Bir hata oluştu.");
+        }
+      });
 
-        // Çıkış
-        logoutBtn?.addEventListener("click", async () => {
-          try {
-            await signOut(auth);
-          } catch (err) {
-            console.error(err);
-            msgEl.textContent = "Çıkış yapılırken hata oluştu.";
-          }
-        });
+      forgotBtn?.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+        if (!email) {
+          msgEl.textContent = "Şifre sıfırlamak için önce e-posta yaz.";
+          return;
+        }
+        msgEl.textContent = "Şifre sıfırlama maili gönderiliyor...";
+        try {
+          await sendPasswordResetEmail(auth, email);
+          msgEl.textContent = "📨 Eğer bu e-posta ile kayıtlı bir hesabın varsa, mail gönderildi. Spam klasörüne bak!";
+        } catch (err) {
+          console.error(err);
+          msgEl.textContent = "Şifre sıfırlama sırasında hata: " + (err.message || "");
+        }
+      });
 
-        // ----------- ŞİFREMİ UNUTTUM -----------
-        forgotBtn?.addEventListener("click", async () => {
-          const email = emailInput.value.trim();
+      logoutBtn?.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+        } catch (err) {
+          console.error(err);
+          msgEl.textContent = "Çıkış yapılırken hata oluştu.";
+        }
+      });
 
-          if (!email) {
-            msgEl.textContent = "Şifre sıfırlamak için önce e-posta yaz.";
-            return;
-          }
-
-          msgEl.textContent = "Şifre sıfırlama maili gönderiliyor...";
-
-          try {
-            await sendPasswordResetEmail(auth, email);
-            msgEl.textContent =
-              "📨 Eğer bu e-posta ile kayıtlı bir hesabın varsa, mail gönderildi. Spam klasörüne bakmayı unutma!";
-          } catch (err) {
-            console.error(err);
-            msgEl.textContent = "Hata oluştu: " + (err.message || "");
-          }
-        });
-      }
-
-      // ---------- PROFİL YÜKLE / KAYDET ----------
       async function loadProfile(user) {
         if (!profileForm || !user) return;
         profileMsg.textContent = "Profil yükleniyor...";
@@ -1650,131 +1181,48 @@ function checkDeviation(current) {
         }
       }
 
-      if (profileForm) {
-        profileForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const user = auth.currentUser;
-          if (!user) {
-            profileMsg.textContent = "Profil kaydetmek için önce giriş yap.";
-            return;
+      profileForm?.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const user = auth.currentUser;
+        if (!user) {
+          profileMsg.textContent = "Profil kaydetmek için önce giriş yap.";
+          return;
+        }
+
+        profileMsg.textContent = "Profil kaydediliyor...";
+        let photoURL = null;
+
+        try {
+          if (profilePhoto?.files && profilePhoto.files[0]) {
+            const file = profilePhoto.files[0];
+            const storageRef = ref(storage, `profilePhotos/${user.uid}`);
+            await uploadBytes(storageRef, file);
+            photoURL = await getDownloadURL(storageRef);
           }
 
-          profileMsg.textContent = "Profil kaydediliyor...";
-          let photoURL = null;
+          const refDoc = doc(db, "users", user.uid);
+          await setDoc(refDoc, {
+            fullName: profileName?.value.trim() || "",
+            city: profileCity?.value.trim() || "",
+            role: profileRole?.value || "",
+            bio: profileBio?.value.trim() || "",
+            languages: profileLangs?.value.trim() || "",
+            dailyRate: profileRate?.value.trim() || "",
+            photoURL: photoURL || undefined,
+            updatedAt: serverTimestamp()
+          }, { merge: true });
 
-          try {
-            if (profilePhoto?.files && profilePhoto.files[0]) {
-              const file = profilePhoto.files[0];
-              const storageRef = ref(storage, `profilePhotos/${user.uid}`);
-              await uploadBytes(storageRef, file);
-              photoURL = await getDownloadURL(storageRef);
-            }
-
-            const refDoc = doc(db, "users", user.uid);
-            await setDoc(refDoc, {
-              fullName: profileName?.value.trim() || "",
-              city: profileCity?.value.trim() || "",
-              role: profileRole?.value || "",
-              bio: profileBio?.value.trim() || "",
-              languages: profileLangs?.value.trim() || "",
-              dailyRate: profileRate?.value.trim() || "",
-              photoURL: photoURL || undefined,
-              updatedAt: serverTimestamp()
-            }, { merge: true });
-
-            if (photoURL && avatarBox) {
-              avatarBox.innerHTML = `<img src="${photoURL}" alt="Profil fotoğrafı">`;
-            }
-
-            profileMsg.textContent = "✅ Profil kaydedildi.";
-          } catch (err) {
-            console.error(err);
-            profileMsg.textContent = "Profil kaydedilirken hata: " + (err.message || "");
-          }
-        });
-      }
-
-      // ---------- REHBER / BUDDY BAŞVURU ----------
-      if (guideForm) {
-        guideForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          guideMsg.textContent = "Gönderiliyor...";
-
-          const user = auth.currentUser;
-          if (!user) {
-            guideMsg.textContent = "Lütfen önce giriş yap / kayıt ol, sonra başvuru gönder.";
-            return;
+          if (photoURL && avatarBox) {
+            avatarBox.innerHTML = `<img src="${photoURL}" alt="Profil fotoğrafı">`;
           }
 
-          const formData = new FormData(guideForm);
-          let profilePhotoUrl = null;
-          let idDocumentUrl   = null;
+          profileMsg.textContent = "✅ Profil kaydedildi.";
+        } catch (err) {
+          console.error(err);
+          profileMsg.textContent = "Profil kaydedilirken hata: " + (err.message || "");
+        }
+      });
 
-          try {
-            if (profileInput?.files[0]) {
-              const file = profileInput.files[0];
-              const storageRef = ref(
-                storage,
-                `guideUploads/${user.uid}/profile-${Date.now()}-${file.name}`
-              );
-              await uploadBytes(storageRef, file);
-              profilePhotoUrl = await getDownloadURL(storageRef);
-            }
-
-            if (idDocInput?.files[0]) {
-              const file = idDocInput.files[0];
-              const storageRef = ref(
-                storage,
-                `guideUploads/${user.uid}/id-${Date.now()}-${file.name}`
-              );
-              await uploadBytes(storageRef, file);
-              idDocumentUrl = await getDownloadURL(storageRef);
-            }
-          } catch (uploadErr) {
-            console.error(uploadErr);
-            guideMsg.textContent = "Dosyalar yüklenirken hata oluştu. Lütfen tekrar dene.";
-            return;
-          }
-
-          const data = {
-            uid: user.uid,
-            email: user.email || "",
-            fullName: formData.get("fullName") || "",
-            birthdate: formData.get("birthdate") || "",
-            idNumber: formData.get("idNumber") || "",
-            city: formData.get("city") || "",
-            phone: formData.get("phone") || "",
-            emergencyName: formData.get("emergencyName") || "",
-            emergencyPhone: formData.get("emergencyPhone") || "",
-            role: formData.get("role") || "guide",
-            langs: (formData.get("langs") || "")
-              .toString()
-              .split(",")
-              .map(s => s.trim())
-              .filter(Boolean),
-            pricePerDay: Number(formData.get("pricePerDay") || 0),
-            isLicensed: formData.get("isLicensed") === "on",
-            about: formData.get("about") || "",
-            noCriminal: formData.get("noCriminal") === "on",
-            infoCorrect: formData.get("infoCorrect") === "on",
-            profilePhotoUrl,
-            idDocumentUrl,
-            status: "pending",
-            createdAt: serverTimestamp()
-          };
-
-          try {
-            await addDoc(collection(db, "guideApplications"), data);
-            guideMsg.textContent = "🎉 Başvurun alındı. Ekibimiz inceleyip seninle iletişime geçecek.";
-            guideForm.reset();
-          } catch (err) {
-            console.error(err);
-            guideMsg.textContent = "Gönderirken hata oluştu: " + (err.message || "");
-          }
-        });
-      }
-
-      // ---------- MESAJLAŞMA ----------
       async function loadMyMessages(user, targetName = null) {
         if (!messageList) return;
         messageList.innerHTML = "<p class='muted'>Yükleniyor...</p>";
@@ -1848,9 +1296,7 @@ function checkDeviation(current) {
         if (messagesInfo) messagesInfo.textContent = `${guideName} ile sohbet ediyorsun.`;
 
         loadMyMessages(user, guideName);
-
         document.getElementById("messages")?.scrollIntoView({ behavior: "smooth" });
-
         document.getElementById("closeGuidePlan")?.click();
       });
 
@@ -1861,9 +1307,7 @@ function checkDeviation(current) {
         const text = messageInput.value.trim();
         if (!text) return;
 
-        const banned = [
-          "sex","seks","orospu","sürtük","göt","sik","amcık","tecavüz","taciz"
-        ];
+        const banned = ["sex","seks","orospu","sürtük","göt","sik","amcık","tecavüz","taciz"];
         const lower = text.toLowerCase();
         if (banned.some(w => lower.includes(w))) {
           alert("Bu mesaj uygun değil ve gönderilmedi.");
@@ -1902,7 +1346,6 @@ function checkDeviation(current) {
         }
       });
 
-      // ---------- KULLANICI DURUMU ----------
       onAuthStateChanged(auth, async (user) => {
         if (user) {
           await ensureUserDoc(user);
@@ -1920,4 +1363,3 @@ function checkDeviation(current) {
   </script>
 </body>
 </html>
-
